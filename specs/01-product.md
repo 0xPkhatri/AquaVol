@@ -2,9 +2,9 @@
 
 ## Status
 
-- Version: 0.1
-- State: draft for human review
-- Implementation authorized: no
+- Version: 0.2
+- State: approved MVP baseline
+- Implementation authorized: mathematical reference only
 - Network target: Base Sepolia
 
 The words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** describe normative
@@ -69,6 +69,21 @@ The canonical demo MUST use:
 | Buy mode | Exact-output CALL |
 | Sell-back mode | Exact-input CALL |
 | Exercise settlement | Physical WETH delivery for strike USDC |
+
+The canonical parameters are:
+
+| Parameter | Approved value |
+| --- | --- |
+| Written collateral | 10 WETH |
+| Initial CALL inventory | 10 CALL |
+| Virtual quote liquidity | 5,000 USDC |
+| Strike | 4,000 USDC per WETH |
+| Initial demo spot | 3,800 USDC per WETH |
+| Initial time to expiry | Seven days |
+| Implied volatility | 64% annualized |
+| Inventory gamma | 20% |
+| Half-spread | 1% |
+| Exercise window | 24 hours |
 
 ## Component responsibilities
 
@@ -166,10 +181,8 @@ After the canonical path is complete, the project MAY add:
 
 ## Product acceptance
 
-This specification is ready for implementation approval when a human confirms:
-
-- the one-writer restriction;
-- the canonical strike, expiry, exercise-window length, and demo amounts;
-- the administrator trust model for spot and volatility;
-- that buyback support belongs in the MVP rather than stretch scope.
-
+The one-writer restriction, canonical parameters, administrator-controlled demo
+inputs, and buyback support are approved for the MVP. This approval authorizes
+the independent mathematical reference only. Contract implementation requires
+a later prompt after the reference vectors and protocol dependencies are
+reviewed.

@@ -2,9 +2,9 @@
 
 ## Status
 
-- Version: 0.1
-- State: draft for human review
-- Implementation authorized: no
+- Version: 0.2
+- State: approved MVP behavior
+- Implementation authorized: mathematical reference only
 
 ## Immutable series identity
 
@@ -16,7 +16,7 @@ MUST include:
 - USDC quote address;
 - strike price expressed as quote WAD per whole WETH;
 - expiry timestamp;
-- exercise-window duration;
+- 24-hour exercise-window duration;
 - option-token name and symbol.
 
 The MVP MUST deploy a separate ERC-20 contract for each series. Series terms
@@ -177,10 +177,13 @@ Tests MUST demonstrate:
 - repeated exercise with burned tokens and repeated redemption both fail;
 - fractional option amounts preserve solvency and rounding rules.
 
-## Unresolved before approval
+## Approved lifecycle decisions
 
-- Exact exercise-window duration.
-- Whether expired CALL tokens remain transferable after redemption or transfers
-  are disabled once the window closes.
-- Final token name and symbol format.
+- The exercise window lasts 24 hours after expiry.
+- Aqua trading stops at expiry.
+- CALL tokens remain standard transferable ERC-20 tokens after expiry, although
+  expired tokens have no exercise or redemption claim after the window closes.
+- The public name format is `AquaVol WETH <strike> Call <YYYYMMDD>`.
+- The symbol format is `avWETH-<strike>-C-<YYYYMMDD>`.
 
+These decisions do not authorize contract implementation until a later prompt.

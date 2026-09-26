@@ -46,3 +46,26 @@ Prefer wallet, public RPC, deployed contracts, and browser-readable chain state
 for the canonical path. A backend or indexer becomes mandatory only when the
 approved position cannot be demonstrated reliably without it.
 
+## E-005 — Freeze the canonical covered-call MVP
+
+- Date: 2026-09-26
+- State: accepted
+
+The canonical market uses one writer, one WETH/USDC European call series, 10
+WETH collateral, a 4,000 USDC strike, seven initial days to expiry, a 24-hour
+exercise window, 64% implied volatility, 20% inventory gamma, and a 1%
+half-spread. Exact-output buys and exact-input sell-backs are both in scope.
+
+CALL tokens remain transferable after expiry, but Aqua trading stops at expiry.
+Public swap evidence targets Base Sepolia; deterministic exercise uses a labeled
+local-fork replay.
+
+## E-006 — Authorize the independent math phase
+
+- Date: 2026-09-26
+- State: accepted
+
+The first implementation artifact is a standard-library Python reference and
+versioned test vectors. It is independent of the live execution path. Solidity,
+Aqua, SwapVM, TypeScript, and UI implementation remain unauthorized until the
+reference results are reviewed.

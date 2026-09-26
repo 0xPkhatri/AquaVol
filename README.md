@@ -4,9 +4,9 @@ AquaVol is a spec-driven project being developed during ETHGlobal Tokyo 2026.
 
 ## Status
 
-This repository currently contains the project baseline, prompt record, and
-draft product specifications. No application or smart-contract code has been
-implemented yet.
+This repository currently contains the project baseline, prompt record, product
+specifications, and an independent Python mathematical reference. No browser,
+backend, or smart-contract implementation exists yet.
 
 The project is in **position discovery**. Implementation begins only after the
 position lifecycle, mathematical inputs, settlement path, and demo evidence
@@ -62,6 +62,24 @@ virtual liquidity and settles token transfers. SwapVM reads the current Aqua
 balances and calculates the executable price. The solid maker/trader arrows
 show economic token movement authorized and accounted for through Aqua; Aqua
 does not custody the strategy inventory when it is shipped.
+
+## Mathematical reference
+
+The standard-library Python model provides independent Black-Scholes and
+inventory-pricing vectors for later TypeScript and Solidity implementations.
+For the canonical inputs—3,800 spot, 4,000 strike, seven days, and 64%
+volatility—the fair call value is `60.294026671319` USDC. With the approved
+first-trade inventory adjustment and spread, the initial one-CALL ask is
+`61.505936607413` USDC before token-unit rounding.
+
+Run the reference tests from the repository root:
+
+```bash
+PYTHONPATH=python python3 -m unittest discover -s python/tests -v
+```
+
+See the [Python reference](python/README.md) and
+[version-one vectors](test/vectors/black_scholes-v1.json).
 
 ## Development approach
 

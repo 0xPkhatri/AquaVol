@@ -14,9 +14,14 @@ As of 2026-09-26, AI assistance has been used to:
 - identify compliance, deployment, testing, and mathematical-specification
   concerns;
 - prepare this repository baseline and prompt record.
+- draft the product, lifecycle, pricing, integration, security, and demo
+  specifications under human-approved constraints;
+- implement and test the independent Python Black-Scholes and inventory-pricing
+  reference;
+- generate the version-one cross-language mathematical vectors.
 
-No application or smart-contract implementation has been generated at this
-stage.
+No browser, backend, or smart-contract implementation has been generated at
+this stage.
 
 ## Attribution policy
 

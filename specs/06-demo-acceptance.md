@@ -2,9 +2,9 @@
 
 ## Status
 
-- Version: 0.1
-- State: draft for demo review
-- Implementation authorized: no
+- Version: 0.2
+- State: approved demo baseline
+- Implementation authorized: mathematical reference only
 
 ## Demo objective
 
@@ -25,9 +25,9 @@ evidence. It SHOULD provide:
 - a scripted local-fork fallback using the same contract interfaces.
 
 The live Base Sepolia trade supplies the required public token-transfer
-evidence. Time-dependent exercise MAY use a separately prepared series already
-inside its exercise window or a clearly labeled local-fork replay. The demo MUST
-NOT pretend that Base Sepolia time was manipulated.
+evidence. Time-dependent exercise uses a clearly labeled deterministic
+local-fork replay. The demo MUST NOT pretend that Base Sepolia time was
+manipulated.
 
 ## Prepared state
 
@@ -188,12 +188,12 @@ The demo is ready only when:
 - the presenter can explain the trusted inputs and non-production status;
 - the complete sequence stays below four minutes.
 
-## Unresolved before approval
+## Approved demo decisions
 
-- Canonical strike, expiry, exercise-window duration, and quantities.
-- Whether exercise is shown through a prepared public series or local-fork
-  replay.
-- Hosting provider and public URL.
-- Final wallet and explorer flow.
-- Exact failure path used in the live presentation.
+- Canonical amounts and market parameters are defined in the product spec.
+- Public token-transfer evidence comes from Base Sepolia.
+- Exercise is demonstrated through a labeled deterministic local-fork replay.
+- No backend is required for the canonical path.
 
+Hosting, final wallet/explorer presentation, and the exact live failure path
+remain operational decisions rather than blockers for the mathematical phase.

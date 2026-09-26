@@ -2,9 +2,9 @@
 
 ## Status
 
-- Version: 0.1
-- State: draft for mathematical review
-- Implementation authorized: no
+- Version: 0.2
+- State: approved for reference implementation
+- Implementation authorized: Python reference and vectors only
 
 ## Scope
 
@@ -132,6 +132,25 @@ The initial public example is:
 Expected fair value is approximately `60.29` quote units. The generated Python
 vector, including additional precision, becomes canonical before Solidity tests
 are written.
+
+The canonical market-making parameters are:
+
+```text
+Q0          = 10 CALL
+Q           = 10 CALL before the first purchase
+q           = 1 CALL
+gamma       = 0.20
+half-spread = 0.01
+```
+
+The first purchase integrates exposure from `0%` to `10%`, so its average
+exposure is `5%`. Its reference ask is therefore approximately:
+
+```text
+fair * (1 + 0.20 * 0.05) * (1 + 0.01)
+```
+
+The generated vector supplies the canonical precise value.
 
 Initial option-price tolerance is the larger of:
 
@@ -262,3 +281,6 @@ Vectors MUST cover:
 - Whether a premium reaching the spot upper bound reverts or disables only the
   affected direction.
 
+These items remain deliberately unresolved for Solidity. They do not block the
+standard-library Python reference, which uses binary floating-point calculations
+and `math.erf` for the normal CDF.
