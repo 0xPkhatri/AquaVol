@@ -1,10 +1,11 @@
 # AquaVol contracts
 
 This Foundry project contains the isolated `OptionSeries` lifecycle, pinned
-unmodified Aqua and SwapVM submodules, and an AquaVol router extension. Local
-tests prove the unmodified CALL/USDC settlement path and the custom opcode
-dispatch foundation. Custom option pricing, oracle code, public deployment,
-and production token integration are not yet present.
+unmodified Aqua and SwapVM submodules, an AquaVol router extension, and a
+guarded Uniswap V3 TWAP adapter. Local tests prove the CALL/USDC settlement
+path, custom opcode dispatch foundation, and oracle validation boundary.
+Custom option pricing, public deployment, and production token integration are
+not yet present.
 
 ## Custom SwapVM foundation
 
@@ -84,6 +85,18 @@ Run the modified-router settlement evidence:
 ```bash
 forge test --offline --match-contract AquaVolSwapVMSettlementTest -vv
 ```
+
+Run the explicitly enabled Base Sepolia read-only evidence with your RPC URL:
+
+```bash
+RUN_BASE_SEPOLIA_FORK=true \
+BASE_SEPOLIA_RPC_URL="https://your-base-sepolia-rpc" \
+forge test --match-path test/fork/BaseSepoliaUniswapV3.t.sol -vv
+```
+
+The fork test resolves the WETH/test-USDC pool through the official V3 factory
+and performs no transaction, deployment, liquidity operation, or swap. Without
+the opt-in flag, it makes no RPC request.
 
 The suite includes unit tests, a 512-run fractional exercise fuzz test, and
 stateful invariants covering lifecycle transitions and collateral solvency.

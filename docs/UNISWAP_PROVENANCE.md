@@ -9,15 +9,17 @@
 | `Uniswap/sdks` | `60d7e07e9dd1c62a8b662effd1818c24c5e02ebc` | Reference repository license; no code import approved | Base Sepolia address registry only |
 
 The revisions were resolved from the official repository HEADs on 2026-09-26.
-No Uniswap source or package is imported by Prompt 0007 Checkpoint 1.
+No Uniswap package or repository is vendored. Prompt 0007 Checkpoint 2 added
+only the attributed Solidity 0.8 adaptations listed below.
 
 ## Solidity compatibility finding
 
 The pinned V3 periphery OracleLibrary declares a Solidity range below 0.8,
-while AquaVol compiles with Solidity 0.8.30. Direct import is therefore not an
-approved implementation path. A later checkpoint may adapt only the required
-consult, TickMath, and quote logic under GPL-2.0-or-later with exact source
-links, marked modifications, and independent vectors.
+while AquaVol compiles with Solidity 0.8.30. Direct import was therefore not a
+compatible implementation path. Checkpoint 2 adapted only the required pool
+interfaces, cumulative-observation calculation, TickMath conversion, and
+tick-quote logic under GPL-2.0-or-later. The isolated files contain exact source
+revisions and modification notices; independent vectors exercise the math.
 
 ## Base Sepolia registry
 
