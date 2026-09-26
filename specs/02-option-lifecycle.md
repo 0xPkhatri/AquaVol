@@ -4,7 +4,7 @@
 
 - Version: 0.2
 - State: approved MVP behavior
-- Implementation authorized: mathematical reference only
+- Implementation authorized: isolated OptionSeries contract and tests
 
 ## Immutable series identity
 
@@ -186,4 +186,5 @@ Tests MUST demonstrate:
 - The public name format is `AquaVol WETH <strike> Call <YYYYMMDD>`.
 - The symbol format is `avWETH-<strike>-C-<YYYYMMDD>`.
 
-These decisions do not authorize contract implementation until a later prompt.
+Prompt 0004 authorizes the isolated `OptionSeries` contract and its Foundry
+tests. It does not authorize Aqua, SwapVM, pricing-oracle, or deployment code.

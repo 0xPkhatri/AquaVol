@@ -4,7 +4,7 @@
 
 - Version: 0.2
 - State: approved demo baseline
-- Implementation authorized: mathematical reference only
+- Implementation authorized: mathematical reference and isolated OptionSeries
 
 ## Demo objective
 

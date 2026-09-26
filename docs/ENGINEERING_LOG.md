@@ -69,3 +69,18 @@ The first implementation artifact is a standard-library Python reference and
 versioned test vectors. It is independent of the live execution path. Solidity,
 Aqua, SwapVM, TypeScript, and UI implementation remain unauthorized until the
 reference results are reviewed.
+
+## E-007 — Isolate the collateral contract phase
+
+- Date: 2026-09-26
+- State: accepted
+
+Prompt 0004 authorizes `OptionSeries` and its Foundry tests without authorizing
+Aqua, SwapVM, oracle, deployment, or frontend work. The series uses no runtime
+package dependency. It accepts only exact incoming WETH and USDC transfers,
+uses upward rounding for fractional strike settlement, and protects every
+lifecycle mutation with a reentrancy guard.
+
+Reason: proving collateral solvency and exercise behavior independently keeps
+later trading and pricing failures outside the option holder's settlement
+rights.

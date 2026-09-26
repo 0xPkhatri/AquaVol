@@ -4,7 +4,7 @@
 
 - Version: 0.2
 - State: approved MVP baseline
-- Implementation authorized: mathematical reference only
+- Implementation authorized: mathematical reference and isolated OptionSeries
 - Network target: Base Sepolia
 
 The words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** describe normative
@@ -182,7 +182,6 @@ After the canonical path is complete, the project MAY add:
 ## Product acceptance
 
 The one-writer restriction, canonical parameters, administrator-controlled demo
-inputs, and buyback support are approved for the MVP. This approval authorizes
-the independent mathematical reference only. Contract implementation requires
-a later prompt after the reference vectors and protocol dependencies are
-reviewed.
+inputs, and buyback support are approved for the MVP. Prompt 0004 authorizes
+the isolated `OptionSeries` implementation. Aqua, SwapVM, oracle, deployment,
+and browser implementation still require later phase prompts.

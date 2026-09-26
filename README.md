@@ -4,13 +4,14 @@ AquaVol is a spec-driven project being developed during ETHGlobal Tokyo 2026.
 
 ## Status
 
-This repository currently contains the project baseline, prompt record, product
-specifications, and an independent Python mathematical reference. No browser,
-backend, or smart-contract implementation exists yet.
+This repository contains the project baseline, prompt record, product
+specifications, an independent Python mathematical reference, and the first
+isolated Solidity implementation of the collateralized option lifecycle. No
+browser, backend, Aqua, SwapVM, oracle, or deployment implementation exists yet.
 
-The project is in **position discovery**. Implementation begins only after the
-position lifecycle, mathematical inputs, settlement path, and demo evidence
-are approved in the foundation specification.
+The project is in **OptionSeries implementation**. The contract phase is kept
+separate from pricing and trading integration so its collateral and settlement
+invariants can be tested independently.
 
 ## Intended stack
 
@@ -80,6 +81,25 @@ PYTHONPATH=python python3 -m unittest discover -s python/tests -v
 
 See the [Python reference](python/README.md) and
 [version-one vectors](test/vectors/black_scholes-v1.json).
+
+## OptionSeries contracts
+
+The Foundry project implements one fully collateralized European covered-call
+series. It locks WETH one-to-one with CALL, supports upward-rounded fractional
+USDC strike payments during the exercise window, and permits one final writer
+redemption after that window closes.
+
+Run the contract checks:
+
+```bash
+cd contracts
+forge fmt --check
+forge build
+forge test
+```
+
+These contracts are hackathon software and have not been audited. See the
+[contract notes](contracts/README.md) for the current scope and boundaries.
 
 ## Development approach
 
