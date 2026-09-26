@@ -339,6 +339,27 @@ contract MockFairValueOracle is IAquaVolSpotOracle {
             );
         }
 
+        function testRejectsSecondFairValueInstructionForBothDirections() public {
+            _expectRevert(
+                _args(MAXIMUM_AGE),
+                address(quote),
+                address(series),
+                false,
+                1,
+                ONE_CALL,
+                AquaVolFairValue.FairValueRegisterAlreadySet.selector
+            );
+            _expectRevert(
+                _args(MAXIMUM_AGE),
+                address(series),
+                address(quote),
+                true,
+                ONE_CALL,
+                1,
+                AquaVolFairValue.FairValueRegisterAlreadySet.selector
+            );
+        }
+
         function testInstructionDoesNotMoveTokensOrMutateHarnessStorage() public {
             underlying.mint(address(harness), 2e18);
             quote.mint(address(harness), 100e6);
@@ -370,13 +391,7 @@ contract MockFairValueOracle is IAquaVolSpotOracle {
 
         function _expectHealthyBuyRevert(bytes4 selector) private {
             _expectRevert(
-                _args(MAXIMUM_AGE),
-                address(quote),
-                address(series),
-                false,
-                ONE_CALL,
-                ONE_CALL,
-                selector
+                _args(MAXIMUM_AGE), address(quote), address(series), false, 0, ONE_CALL, selector
             );
         }
 

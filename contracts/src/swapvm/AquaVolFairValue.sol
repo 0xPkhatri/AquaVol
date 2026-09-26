@@ -59,6 +59,7 @@ library AquaVolFairValue {
     error VolatilityStale(uint256 age, uint256 maximumAge);
     error ZeroPremium();
     error ZeroQuoteAmount();
+    error FairValueRegisterAlreadySet(uint256 currentAmount);
 
     function build(
         address callToken,
@@ -97,6 +98,11 @@ library AquaVolFairValue {
         if (!isBuy && !isSellBack) revert UnsupportedPair(ctx.query.tokenIn, ctx.query.tokenOut);
         if ((isBuy && ctx.query.isExactIn) || (isSellBack && !ctx.query.isExactIn)) {
             revert UnsupportedSwapMode(ctx.query.isExactIn);
+        }
+
+        uint256 currentMissingAmount = isBuy ? ctx.swap.amountIn : ctx.swap.amountOut;
+        if (currentMissingAmount != 0) {
+            revert FairValueRegisterAlreadySet(currentMissingAmount);
         }
 
         uint256 callAmount = isBuy ? ctx.swap.amountOut : ctx.swap.amountIn;

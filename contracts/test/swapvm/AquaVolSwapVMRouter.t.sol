@@ -135,7 +135,6 @@ contract AquaVolSwapVMRouterTest {
     }
 
     function testReservedAndUnknownOpcodesDelegateToUpstreamRevert() public {
-        _requireUnknownOpcode(AquaVolOpcode.OPTION_INVENTORY_SKEW);
         _requireUnknownOpcode(AquaVolOpcode.RESERVED_BANK_START);
         _requireUnknownOpcode(0xef);
     }
