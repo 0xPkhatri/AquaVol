@@ -30,6 +30,12 @@ implementation so that the development process remains reviewable.
 Current working documents:
 
 - [Foundation specification](specs/00-foundation.md)
+- [Product specification](specs/01-product.md)
+- [Option lifecycle](specs/02-option-lifecycle.md)
+- [Pricing model](specs/03-pricing-model.md)
+- [Aqua and SwapVM integration](specs/04-aqua-swapvm-integration.md)
+- [Security invariants](specs/05-security-invariants.md)
+- [Demo acceptance](specs/06-demo-acceptance.md)
 - [Engineering log](docs/ENGINEERING_LOG.md)
 - [Dependency register](docs/DEPENDENCY_REGISTER.md)
 - [Repository policy](docs/REPOSITORY_POLICY.md)
