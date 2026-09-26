@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { deployment } from "../data/deployment";
 import { createLeg, modelPremium, type OptionKind, type StrategyLeg } from "../domain/options";
+import { PayoffChart } from "./PayoffChart";
 
 const expiries = [
   { value: deployment.liveExpiry, label: "04 Oct 2026", live: true },
@@ -101,5 +102,6 @@ export function StrategyBuilder() {
         <p className="panel-note">Only the $4,000 CALL expiring 04 Oct is deployed. All other quotes are simulations.</p>
       </article>
     </div>
+    <PayoffChart legs={legs} />
   </section>;
 }
