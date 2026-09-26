@@ -65,15 +65,19 @@ The supported local variable names are:
 
 ```text
 BASE_SEPOLIA_RPC_URL
-PRIVATE_KEY
+OPERATOR_ADDRESS
+MIN_OPERATOR_BALANCE_WEI (optional; defaults to the reviewed testnet floor)
+PRIVATE_KEY (required only by a later broadcast checkpoint)
 BASESCAN_API_KEY (optional until source verification)
 ```
 
-The ignored `contracts/.env` MAY contain the testnet-only operator key. Scripts
-MUST reject an empty key, a zero derived address, a chain-ID mismatch, and an
-operator balance below the reviewed gas budget. Scripts MUST display only the
-derived public address, never the key. An encrypted Foundry keystore remains
-preferred for repeated use.
+The read-only preflight MUST use `OPERATOR_ADDRESS` and MUST NOT load
+`PRIVATE_KEY`. The ignored `contracts/.env` MAY contain the testnet-only
+operator key for later broadcast checkpoints. State-changing scripts MUST
+reject an empty key, confirm its derived address matches `OPERATOR_ADDRESS`,
+reject a chain-ID mismatch, and reject an operator balance below the reviewed
+gas budget. Scripts MUST display only the public address, never the key. An
+encrypted Foundry keystore remains preferred for repeated use.
 
 The trader key is outside deployment configuration. The application requests
 the trader signature through the connected browser wallet.

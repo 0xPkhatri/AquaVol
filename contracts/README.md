@@ -5,8 +5,9 @@ unmodified Aqua and SwapVM submodules, an AquaVol router extension, a guarded
 Uniswap V3 TWAP adapter, and a bounded implied-volatility registry. Local tests
 prove the CALL/USDC settlement path, custom opcode dispatch foundation, oracle
 validation boundaries, fixed-point European-call pricing, and inventory-aware
-Aqua settlement in both directions. Public deployment and production token
-integration are not yet present.
+Aqua settlement in both directions. A capped, explicitly labeled demo quote
+token and read-only Base Sepolia preflight tooling are also present. Public
+deployment and production token integration are not yet present.
 
 ## Custom SwapVM foundation
 
@@ -93,6 +94,37 @@ forge test --match-path test/fork/BaseSepoliaUniswapV3.t.sol -vv
 The fork test resolves the WETH/test-USDC pool through the official V3 factory
 and performs no transaction, deployment, liquidity operation, or swap. Without
 the opt-in flag, it makes no RPC request.
+
+## Base Sepolia deployment preflight
+
+`AquaVolDemoUSDC` is a six-decimal test token named `AquaVol Demo USD` with
+symbol `avUSD`. Only its immutable minter can mint, and total supply is capped
+at 10,000,000 avUSD. It is not Circle USDC and must never be presented as a
+production or redeemable asset.
+
+Copy the variable names from `.env.example` into the ignored `.env`. Set
+`OPERATOR_ADDRESS` to the public address of the disposable Base Sepolia
+operator. Do not put a real private key in `.env.example`.
+
+Run the read-only preflight from `contracts/`:
+
+```bash
+forge script script/PreflightBaseSepolia.s.sol:PreflightBaseSepolia \
+  --rpc-url https://sepolia.base.org \
+  -vv
+```
+
+The preflight requires chain ID `84532`, a configured operator gas balance,
+deployed bytecode at all official dependencies, the 0.30% V3 fee-tier spacing,
+correct factory/WETH bindings on the position manager and SwapRouter02, and an
+18-decimal canonical WETH. It contains no `startBroadcast` call and does not
+read `PRIVATE_KEY`.
+
+Run only the local deployment-tooling tests:
+
+```bash
+forge test --offline --match-path 'test/deployment/*.t.sol' -vv
+```
 
 ## Volatility trust boundary
 

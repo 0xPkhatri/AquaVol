@@ -47,6 +47,15 @@ must remain identical. The final amounts require a reviewed deployment prompt.
     changes, events, transaction hashes, and explorer links.
 11. Run a read-only verification script against the deployment manifest.
 
+## Implemented preflight boundary
+
+Prompt 0010 checkpoint 2 adds a preflight that reads `OPERATOR_ADDRESS` rather
+than the signing key. It checks chain ID, the operator's configured minimum gas
+balance, dependency bytecode and code hashes, the official 0.30% fee-tier tick
+spacing, position-manager and router factory/WETH bindings, and WETH decimals.
+The script has no broadcast path. Later state-changing scripts must separately
+prove that the signing key derives the reviewed operator address.
+
 ## Operational rules
 
 - Use one dedicated testnet-only operator for deployer, volatility updater,
