@@ -28,10 +28,18 @@ As of 2026-09-26, AI assistance has been used to:
 - implement and test the capped demo token and read-only deployment preflight;
   and
 - implement and run the deterministic full-deployment Base Sepolia fork
-  rehearsal.
+  rehearsal;
+- support the reviewed Base Sepolia deployment, verification, and public
+  settlement evidence;
+- implement the original React/TypeScript/Vite strategy workspace, payoff
+  visualization, and protocol evidence views; and
+- implement and debug MetaMask-based maker and trader flows for the single live
+  CALL, including bounded approvals, oracle-maintenance controls, SwapVM taker
+  encoding, and named revert diagnostics.
 
-No browser, backend, or public deployment implementation has been generated at
-this stage.
+No production backend, mainnet deployment, autonomous signer, or private-key
+handling has been generated. All testnet writes remain explicitly initiated and
+approved by the human operator or trader.
 
 ## Attribution policy
 

@@ -312,3 +312,31 @@ transaction is
 After a fresh public observation, the read-only verifier reported a
 3,842.159899 avUSD/WETH TWAP and a higher next 0.01 CALL ask of 0.815649 avUSD
 without changing the strategy hash.
+
+## E-021 — Accept browser-wallet Aqua settlement
+
+- Date: 2026-09-27
+- State: accepted through manual Base Sepolia execution
+
+The React workspace now separates the immutable operator from connected trader
+accounts and exposes real MetaMask transactions for the deployed CALL only.
+Alice wrapped WETH, approved collateral, wrote additional CALL, pushed inventory
+through Aqua, restored the settlement allowance, and refreshed bounded pricing
+inputs. Bob approved avUSD and completed another exact-output CALL purchase
+through the deployed modified SwapVM router.
+
+Manual debugging confirmed three independent fail-closed boundaries. A stale
+volatility record produced `VolatilityStale`; an observation older than the
+immutable 120-second maximum produced `LatestObservationTooOld`; and a live ask
+above Bob's one-avUSD threshold produced `TakerTraitsExceedingMaxInputAmount`.
+The UI retains these guards and provides operator maintenance actions instead
+of bypassing them.
+
+The first browser taker encoder accidentally emitted nine `0x0025` offsets,
+making its header 24 rather than 22 bytes and shifting the `0x0040` flag out of
+the parsed traits. This produced `AquaBalanceInsufficientAfterTakerPush`. The
+accepted encoder now matches `TakerTraitsLib.build`: eight `0x0025` offsets,
+two `0x0020` offsets, and the `0x0040` flag, followed by the threshold and
+deadline. A successful Bob settlement after this correction accepted the live
+wallet checkpoint. Its transaction hash remains to be copied from the frontend
+confirmation link into the public evidence record.
