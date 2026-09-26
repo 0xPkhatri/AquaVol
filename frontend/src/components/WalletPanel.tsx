@@ -57,8 +57,10 @@ const buildExactOutputBuyData = (maximumInput: bigint) => concatHex([
 ]);
 const publicClient = createPublicClient({ chain: baseSepolia, transport: http(import.meta.env.VITE_BASE_SEPOLIA_RPC_URL || deployment.rpcUrl) });
 type Balances = { eth: string; avUsd: string; call: string };
+type WalletRole = "maker" | "buyer";
 
 export function WalletPanel() {
+  const [role, setRole] = useState<WalletRole>();
   const [account, setAccount] = useState<Address>();
   const [balances, setBalances] = useState<Balances>();
   const [busy, setBusy] = useState(false);
@@ -69,6 +71,7 @@ export function WalletPanel() {
   const [action, setAction] = useState("");
   const [lastTx, setLastTx] = useState<Hash>();
   const alice = account?.toLowerCase() === deployment.addresses.operator.toLowerCase();
+  const makerWalletMismatch = role === "maker" && !!account && !alice;
 
   const refresh = async (address: Address) => {
     const [eth, avUsd, call] = await Promise.all([
@@ -222,14 +225,22 @@ export function WalletPanel() {
     <div className="wallet-identity">
       <span className="eyebrow">METAMASK</span>
       <strong>{account ? shortAddress(account) : "Wallet not connected"}</strong>
-      {account && <small className={alice ? "alice-role" : "trader-role"}>{alice ? "ALICE · OPERATOR" : "TRADER"}</small>}
+      {account && role && <small className={role === "maker" ? "alice-role" : "trader-role"}>{role === "maker" ? "LIQUIDITY MAKER" : "OPTION BUYER"}</small>}
+    </div>
+    <div className="wallet-role-picker" aria-label="Choose wallet role">
+      <small>CHOOSE ROLE</small>
+      <div>
+        <button className={role === "maker" ? "active" : ""} onClick={() => { setRole("maker"); setError(""); }}>Liquidity Maker</button>
+        <button className={role === "buyer" ? "active" : ""} onClick={() => { setRole("buyer"); setError(""); }}>Option Buyer</button>
+      </div>
     </div>
     {account && <><div><small>BASE ETH</small><strong>{balances?.eth ?? "—"}</strong></div><div><small>avUSD</small><strong>{balances?.avUsd ?? "—"}</strong></div><div><small>LIVE CALL</small><strong>{balances?.call ?? "—"}</strong></div></>}
-    <button onClick={() => account ? void refresh(account) : void connect()} disabled={busy}>{busy ? "Connecting…" : account ? "↻ Balances" : "Connect MetaMask"}</button>
+    <button onClick={() => account ? void refresh(account) : void connect()} disabled={busy || !role}>{busy ? "Connecting…" : account ? "↻ Balances" : role ? "Connect MetaMask" : "Choose a role"}</button>
     {error && <p title={error}>{error}</p>}
   </section>
-  {alice && <section className="maker-console">
-    <div className="maker-heading"><div><span className="eyebrow">ALICE · MAKER CONSOLE</span><h2>Write and expose covered CALL</h2></div><label>CALL amount<input value={amount} onChange={(event) => setAmount(event.target.value)} type="number" min="0.001" step="0.01"/></label></div>
+  {makerWalletMismatch && <section className="role-warning"><strong>Liquidity Maker requires the Alice operator wallet.</strong><span>Switch MetaMask to {shortAddress(deployment.addresses.operator)} and reconnect.</span></section>}
+  {role === "maker" && alice && <section className="maker-console">
+    <div className="maker-heading"><div><span className="eyebrow">ALICE · LIQUIDITY MAKER</span><h2>Write and expose covered CALL</h2></div><label>CALL amount<input value={amount} onChange={(event) => setAmount(event.target.value)} type="number" min="0.001" step="0.01"/></label></div>
     <div className="maker-steps">
       <button disabled={!!action} onClick={() => void wrapWeth()}><span>01</span><strong>Wrap ETH</strong><small>ETH → WETH</small></button>
       <button disabled={!!action} onClick={() => void transact("Approving WETH", (wallet, owner) => wallet.writeContract({ account: owner, chain: null, address: deployment.addresses.weth, abi: wethAbi, functionName: "approve", args: [deployment.addresses.optionSeries, units()] }))}><span>02</span><strong>Approve WETH</strong><small>Allow OptionSeries ({shortAddress(deployment.addresses.optionSeries)}) to lock exactly {amount || "0"} WETH</small></button>
@@ -244,8 +255,8 @@ export function WalletPanel() {
     </div>
     <div className="maker-status"><span>{action || "Execute each numbered transaction in order."}</span>{lastTx && <a href={`${deployment.explorer}/tx/${lastTx}`} target="_blank" rel="noreferrer">View confirmed transaction ↗</a>}</div>
   </section>}
-  {account && !alice && <section className="maker-console trader-console">
-    <div className="maker-heading"><div><span className="eyebrow">BOB · TRADER CONSOLE</span><h2>Buy the live WETH $4,000 CALL</h2><p>Only this deployed CALL is executable. Alice must first send this wallet demo avUSD, and the TWAP must be fresh.</p></div><div className="trader-inputs"><label>CALL amount<input value={buyAmount} onChange={(event) => setBuyAmount(event.target.value)} type="number" min="0.001" max="0.09" step="0.01"/></label><label>Max avUSD<input value={maxPayment} onChange={(event) => setMaxPayment(event.target.value)} type="number" min="0.01" step="0.01"/></label></div></div>
+  {account && role === "buyer" && <section className="maker-console trader-console">
+    <div className="maker-heading"><div><span className="eyebrow">BOB · OPTION BUYER</span><h2>Buy the live WETH $4,000 CALL</h2><p>Only this deployed CALL is executable. Alice must first send this wallet demo avUSD, and the TWAP must be fresh.</p></div><div className="trader-inputs"><label>CALL amount<input value={buyAmount} onChange={(event) => setBuyAmount(event.target.value)} type="number" min="0.001" max="0.09" step="0.01"/></label><label>Max avUSD<input value={maxPayment} onChange={(event) => setMaxPayment(event.target.value)} type="number" min="0.01" step="0.01"/></label></div></div>
     <div className="maker-steps trader-steps">
       <button disabled={!!action} onClick={() => void transact("Approving avUSD", (wallet, owner) => wallet.writeContract({ account: owner, chain: null, address: deployment.addresses.avUsd, abi: wethAbi, functionName: "approve", args: [deployment.addresses.router, parseUnits(maxPayment || "0", 6)] }))}><span>01</span><strong>Approve avUSD</strong><small>Allow SwapVM Router ({shortAddress(deployment.addresses.router)}) to spend up to {maxPayment || "0"} avUSD</small></button>
       <button disabled={!!action} onClick={() => void buyCall()}><span>02</span><strong>Buy live CALL</strong><small>Exact output: {buyAmount || "0"} avWETH-4000-C. SwapVM rejects execution above your max.</small></button>

@@ -16,6 +16,16 @@ const contracts = [
   ["Uniswap V3 pool", deployment.addresses.pool],
 ] as const;
 
+export function DeploymentContracts() {
+  return <section className="deployment-strip contracts-panel panel" aria-label="Public Base Sepolia deployment">
+    <div className="panel-heading"><span className="eyebrow">PUBLIC DEPLOYMENT</span><span className="network"><i/>Base Sepolia</span></div>
+    <div className="contract-grid">{contracts.map(([name, address]) =>
+      <a href={`${deployment.explorer}/address/${address}`} target="_blank" rel="noreferrer" key={name}>
+        <span>{name}</span><strong>{shortAddress(address)}</strong><b>↗</b>
+      </a>)}</div>
+  </section>;
+}
+
 export function ProtocolProof() {
   const repricing = (deployment.lastAsk / deployment.settledAsk - 1) * 100;
   return <section className="proof-section" id="proof">
@@ -58,12 +68,5 @@ export function ProtocolProof() {
       </article>
     </div>
 
-    <article className="contracts-panel panel">
-      <div className="panel-heading"><div><span className="eyebrow">PUBLIC DEPLOYMENT</span><h2>Contracts judges can verify</h2></div><span className="network"><i/>Base Sepolia</span></div>
-      <div className="contract-grid">{contracts.map(([name, address]) =>
-        <a href={`${deployment.explorer}/address/${address}`} target="_blank" rel="noreferrer" key={name}>
-          <span>{name}</span><strong>{shortAddress(address)}</strong><b>↗</b>
-        </a>)}</div>
-    </article>
   </section>;
 }
