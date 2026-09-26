@@ -3,7 +3,7 @@ pragma solidity 0.8.30;
 
 /// @custom:license-url https://github.com/1inch/swap-vm/blob/feb16411738331f7d05ae71d4a664154068018fc/LICENSES/SwapVM-1.1.txt
 /// @custom:copyright © 2025 Degensoft Ltd
-/// @custom:modification AquaVol custom-router unit tests added 2026-09-26.
+/// @custom:modification AquaVol custom-router unit tests updated 2026-09-26.
 
 import { Aqua } from "@1inch/aqua/src/Aqua.sol";
 import { AquaOpcodes } from "@1inch/swap-vm/contracts/opcodes/AquaOpcodes.sol";
@@ -11,23 +11,14 @@ import { Opcode } from "@1inch/swap-vm/contracts/libs/OpcodeList.sol";
 import { Context } from "@1inch/swap-vm/contracts/libs/VM.sol";
 
 import { MockERC20 } from "../../src/mocks/MockERC20.sol";
-import { AquaVolOpcode } from "../../src/swapvm/AquaVolOpcode.sol";
 import { AquaVolInstructionBuilder } from "../../src/swapvm/AquaVolInstructionBuilder.sol";
-import { AquaVolConstantPrice } from "../../src/swapvm/AquaVolConstantPrice.sol";
+import { AquaVolOpcode } from "../../src/swapvm/AquaVolOpcode.sol";
 import { AquaVolOpcodes } from "../../src/swapvm/AquaVolOpcodes.sol";
 import { AquaVolSwapVMRouter } from "../../src/swapvm/AquaVolSwapVMRouter.sol";
 
 contract AquaVolBuilderHarness {
     function buildRaw(uint8 opcode, bytes memory args) external pure returns (bytes memory) {
         return AquaVolInstructionBuilder.build(opcode, args);
-    }
-
-    function buildConstantPrice(address callToken, address quoteToken, uint256 premium)
-        external
-        pure
-        returns (bytes memory)
-    {
-        return AquaVolConstantPrice.build(callToken, quoteToken, premium);
     }
 }
 
@@ -51,16 +42,12 @@ contract AquaVolOpcodeHarness is AquaVolOpcodes {
         ctx.swap.balanceOut = balanceOut;
         ctx.swap.amountIn = amountIn;
         ctx.swap.amountOut = amountOut;
-
         _runOpcode(ctx, opcode, args);
         return (ctx.swap.amountIn, ctx.swap.amountOut);
     }
 }
 
 contract AquaVolSwapVMRouterTest {
-    uint256 private constant PREMIUM = 61_505_937;
-    uint256 private constant ONE_CALL = 1e18;
-
     AquaVolBuilderHarness private builder;
     AquaVolOpcodeHarness private opcodes;
     MockERC20 private callToken;
@@ -73,17 +60,10 @@ contract AquaVolSwapVMRouterTest {
         quoteToken = new MockERC20("USD Coin", "USDC", 6);
     }
 
-    function testCanonicalOpcodeMappingAndEncoding() public view {
-        bytes memory encoded =
-            builder.buildConstantPrice(address(callToken), address(quoteToken), PREMIUM);
-        bytes memory expected =
-            bytes.concat(hex"d060", abi.encode(address(callToken), address(quoteToken), PREMIUM));
-
-        require(AquaVolOpcode.CONSTANT_PRICE == 0xd0, "constant-price opcode drift");
+    function testCanonicalActiveOpcodeMapping() public pure {
         require(AquaVolOpcode.OPTION_FAIR_VALUE == 0xd1, "fair-value opcode drift");
         require(AquaVolOpcode.OPTION_INVENTORY_SKEW == 0xd2, "inventory opcode drift");
         require(AquaVolOpcode.RESERVED_BANK_START == 0xf0, "reserved bank drift");
-        require(keccak256(encoded) == keccak256(expected), "wrong instruction encoding");
     }
 
     function testBuilderRejectsArgumentsThatDoNotFitHeader() public {
@@ -91,30 +71,12 @@ contract AquaVolSwapVMRouterTest {
         (bool success, bytes memory result) = address(builder)
             .call(
                 abi.encodeCall(
-                    AquaVolBuilderHarness.buildRaw, (AquaVolOpcode.CONSTANT_PRICE, oversized)
+                    AquaVolBuilderHarness.buildRaw, (AquaVolOpcode.OPTION_FAIR_VALUE, oversized)
                 )
             );
 
         require(!success, "oversized arguments accepted");
         _requireSelector(result, AquaVolInstructionBuilder.ArgumentsTooLong.selector);
-    }
-
-    function testConstantPriceSetsExactOutputInputWithCeilingRounding() public {
-        bytes memory args = abi.encode(address(callToken), address(quoteToken), PREMIUM);
-        (uint256 amountIn, uint256 amountOut) = opcodes.run(
-            AquaVolOpcode.CONSTANT_PRICE,
-            args,
-            address(quoteToken),
-            address(callToken),
-            false,
-            5_000e6,
-            10e18,
-            0,
-            ONE_CALL + 1
-        );
-
-        require(amountIn == PREMIUM + 1, "wrong rounded premium");
-        require(amountOut == ONE_CALL + 1, "output amount changed");
     }
 
     function testUpstreamOpcodeDelegatesWithoutChangingRegisters() public {
@@ -134,94 +96,10 @@ contract AquaVolSwapVMRouterTest {
         require(amountOut == 13, "delegated output changed");
     }
 
-    function testReservedAndUnknownOpcodesDelegateToUpstreamRevert() public {
+    function testRetiredReservedAndUnknownOpcodesDelegateToUpstreamRevert() public {
+        _requireUnknownOpcode(0xd0);
         _requireUnknownOpcode(AquaVolOpcode.RESERVED_BANK_START);
         _requireUnknownOpcode(0xef);
-    }
-
-    function testMalformedConstantPriceArgumentsRevert() public {
-        _requireRunRevert(
-            AquaVolOpcode.CONSTANT_PRICE,
-            hex"00",
-            address(quoteToken),
-            address(callToken),
-            false,
-            10e18,
-            ONE_CALL,
-            AquaVolConstantPrice.InvalidArgumentsLength.selector
-        );
-    }
-
-    function testZeroPremiumReverts() public {
-        _requireRunRevert(
-            AquaVolOpcode.CONSTANT_PRICE,
-            abi.encode(address(callToken), address(quoteToken), uint256(0)),
-            address(quoteToken),
-            address(callToken),
-            false,
-            10e18,
-            ONE_CALL,
-            AquaVolConstantPrice.ZeroPremium.selector
-        );
-    }
-
-    function testExactInputAndWrongDirectionRevert() public {
-        bytes memory args = abi.encode(address(callToken), address(quoteToken), PREMIUM);
-        _requireRunRevert(
-            AquaVolOpcode.CONSTANT_PRICE,
-            args,
-            address(quoteToken),
-            address(callToken),
-            true,
-            10e18,
-            ONE_CALL,
-            AquaVolConstantPrice.ExactInputUnsupported.selector
-        );
-        _requireRunRevert(
-            AquaVolOpcode.CONSTANT_PRICE,
-            args,
-            address(callToken),
-            address(quoteToken),
-            false,
-            10e18,
-            ONE_CALL,
-            AquaVolConstantPrice.UnsupportedPair.selector
-        );
-    }
-
-    function testInsufficientOutputLiquidityReverts() public {
-        _requireRunRevert(
-            AquaVolOpcode.CONSTANT_PRICE,
-            abi.encode(address(callToken), address(quoteToken), PREMIUM),
-            address(quoteToken),
-            address(callToken),
-            false,
-            ONE_CALL - 1,
-            ONE_CALL,
-            AquaVolConstantPrice.InsufficientOutputLiquidity.selector
-        );
-    }
-
-    function testHandlerDoesNotMoveTokens() public {
-        callToken.mint(address(opcodes), 3e18);
-        quoteToken.mint(address(opcodes), 100e6);
-        uint256 callBefore = callToken.balanceOf(address(opcodes));
-        uint256 quoteBefore = quoteToken.balanceOf(address(opcodes));
-
-        opcodes.run(
-            AquaVolOpcode.CONSTANT_PRICE,
-            abi.encode(address(callToken), address(quoteToken), PREMIUM),
-            address(quoteToken),
-            address(callToken),
-            false,
-            100e6,
-            3e18,
-            0,
-            ONE_CALL
-        );
-
-        require(callToken.balanceOf(address(opcodes)) == callBefore, "CALL moved");
-        require(quoteToken.balanceOf(address(opcodes)) == quoteBefore, "quote moved");
     }
 
     function testRouterPreservesOfficialBindings() public {
@@ -237,38 +115,15 @@ contract AquaVolSwapVMRouterTest {
     }
 
     function _requireUnknownOpcode(uint8 opcode) private {
-        _requireRunRevert(
-            opcode,
-            "",
-            address(quoteToken),
-            address(callToken),
-            false,
-            10e18,
-            ONE_CALL,
-            AquaOpcodes.UnknownOpcode.selector
-        );
-    }
-
-    function _requireRunRevert(
-        uint256 opcode,
-        bytes memory args,
-        address tokenIn,
-        address tokenOut,
-        bool isExactIn,
-        uint256 balanceOut,
-        uint256 amountOut,
-        bytes4 expectedSelector
-    ) private {
         (bool success, bytes memory result) = address(opcodes)
             .call(
                 abi.encodeCall(
                     AquaVolOpcodeHarness.run,
-                    (opcode, args, tokenIn, tokenOut, isExactIn, 0, balanceOut, 0, amountOut)
+                    (opcode, bytes(""), address(quoteToken), address(callToken), false, 0, 0, 0, 0)
                 )
             );
-
-        require(!success, "expected revert");
-        _requireSelector(result, expectedSelector);
+        require(!success, "unknown opcode succeeded");
+        _requireSelector(result, AquaOpcodes.UnknownOpcode.selector);
     }
 
     function _requireSelector(bytes memory result, bytes4 expected) private pure {

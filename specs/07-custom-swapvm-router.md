@@ -7,6 +7,11 @@
 - Updated: 2026-09-26
 - Implementation authorized: Prompt 0006 checkpoints 2 and 3 only
 
+> Historical specification: the temporary `0xd0` implementation and its
+> dedicated tests were retired after the production pricing path became
+> `0xd1 → 0xd2`. This document remains as evidence of the staged development
+> process; it no longer describes the active dispatcher.
+
 ## Objective
 
 Introduce the smallest reviewable SwapVM extension that proves AquaVol can run

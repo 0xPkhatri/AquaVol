@@ -261,10 +261,10 @@ Tests MUST cover:
 
 ## Temporary opcode retirement
 
-After `0xd1 -> 0xd2` settlement and repricing pass review, opcode `0xd0`, its
-builder, implementation, and dedicated tests MUST be removed before public
-deployment. Historical commits and evidence documents remain the record of the
-deterministic integration stage.
+Opcode `0xd0`, its builder, implementation, and dedicated tests were removed
+after `0xd1 -> 0xd2` settlement and repricing passed review. Historical commits
+and evidence documents remain the record of the deterministic integration
+stage.
 
 ## Security status
 

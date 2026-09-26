@@ -9,7 +9,6 @@ import { Context } from "@1inch/swap-vm/contracts/libs/VM.sol";
 import { AquaOpcodes } from "@1inch/swap-vm/contracts/opcodes/AquaOpcodes.sol";
 
 import { AquaVolOpcode } from "./AquaVolOpcode.sol";
-import { AquaVolConstantPrice } from "./AquaVolConstantPrice.sol";
 import { AquaVolFairValue } from "./AquaVolFairValue.sol";
 import { AquaVolInventorySkew } from "./AquaVolInventorySkew.sol";
 
@@ -20,9 +19,7 @@ contract AquaVolOpcodes is AquaOpcodes {
         virtual
         override
     {
-        if (opcode == AquaVolOpcode.CONSTANT_PRICE) {
-            AquaVolConstantPrice.exec(ctx, args);
-        } else if (opcode == AquaVolOpcode.OPTION_FAIR_VALUE) {
+        if (opcode == AquaVolOpcode.OPTION_FAIR_VALUE) {
             AquaVolFairValue.exec(ctx, args);
         } else if (opcode == AquaVolOpcode.OPTION_INVENTORY_SKEW) {
             AquaVolInventorySkew.exec(ctx, args);

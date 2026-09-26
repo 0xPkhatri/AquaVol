@@ -227,3 +227,19 @@ make reversed or missing instructions fail closed, while Aqua's complete-order
 strategy hash isolates any altered program from canonical liquidity. The
 temporary `0xd0` path remains only until inventory-aware settlement and dynamic
 repricing pass their own review checkpoint.
+
+## E-016 — Retire deterministic pricing scaffolding
+
+- Date: 2026-09-26
+- State: accepted after Prompt 0009 dynamic-settlement verification
+
+The canonical AquaVol strategy now composes `0xd1` fair value with `0xd2`
+inventory skew and settles exact-output buys and exact-input sell-backs through
+the pinned Aqua and SwapVM contracts. Unchanged strategy bytes reprice from live
+Aqua CALL balances, block and sequential fills remain inside the declared
+rounding budget, and real and virtual balance changes reconcile.
+
+Opcode `0xd0`, its constant-price implementation, and its dedicated settlement
+tests are retired. Historical specifications, evidence, and commits remain
+available to explain the staged integration path, while the active dispatcher
+exposes only `0xd1` and `0xd2` from AquaVol's opcode bank.

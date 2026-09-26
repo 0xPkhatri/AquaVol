@@ -1,5 +1,10 @@
 # AquaVol custom-router settlement evidence
 
+> Historical evidence: this document records the temporary `0xd0` integration
+> checkpoint. The implementation and dedicated suite were later removed after
+> `0xd1 → 0xd2` inventory-aware settlement passed. The executable historical
+> suite remains available through Git history.
+
 ## Scope
 
 Prompt 0006 Checkpoint 3 proves that the AquaVol-modified SwapVM router can
@@ -59,7 +64,7 @@ balances, WETH collateral, and CALL supply.
 
 ## Run
 
-From `contracts/`:
+At the historical checkpoint, from `contracts/`:
 
 ```bash
 forge test --offline --match-contract AquaVolSwapVMSettlementTest -vv

@@ -7,7 +7,6 @@ pragma solidity 0.8.30;
 
 /// @notice Canonical opcode assignments for AquaVol's pinned SwapVM extension.
 library AquaVolOpcode {
-    uint8 internal constant CONSTANT_PRICE = 0xd0;
     uint8 internal constant OPTION_FAIR_VALUE = 0xd1;
     uint8 internal constant OPTION_INVENTORY_SKEW = 0xd2;
     uint8 internal constant RESERVED_BANK_START = 0xf0;
