@@ -2,11 +2,12 @@
 
 ## Status
 
-- Version: 0.1
-- State: architecture ready for review
+- Version: 0.2
+- State: deployment tooling and pinned fork rehearsal implemented; public
+  deployment pending
 - Updated: 2026-09-26
-- Implementation authorization: Prompt 0010 checkpoints 2–5 only after each
-  preceding checkpoint is reviewed and committed by a human
+- Implementation authorization: Prompt 0010 checkpoints 1–3 complete;
+  checkpoint 4 requires review and a human-created checkpoint-3 commit
 
 ## Objective
 
@@ -184,7 +185,8 @@ MUST be clearly labeled.
 
 ## Acceptance
 
-Checkpoint 1 is complete when this architecture, Prompt 0010, the wallet-role
-exception, official dependency provenance, current implementation status, and
-deployment gates agree. It authorizes no broadcast. Later checkpoints must add
-tests and evidence before any claim of public deployment is made.
+Checkpoints 1–3 are complete: architecture, tooling, local validation, live
+read-only preflight, and the complete pinned-fork rehearsal agree. The rehearsal
+authorizes no broadcast, and all reported AquaVol addresses are local-only.
+Checkpoint 4 requires separate review before any public transaction or claim of
+public deployment.

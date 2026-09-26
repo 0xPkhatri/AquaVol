@@ -261,3 +261,20 @@ must be disclosed in the README, UI, and deployment manifest. Contract-enforced
 collateral isolation, oracle freshness, pricing bounds, Aqua accounting, and
 trader-token authorization remain unchanged. Production use would require
 separated roles, stronger key management, governance, and an audit.
+
+## E-018 — Accept the pinned Base Sepolia deployment rehearsal
+
+- Date: 2026-09-26
+- State: accepted as local-fork deployment evidence
+
+At pinned Base Sepolia block `47,324,978`, the checkpoint-3 rehearsal validated
+the official Uniswap V3 dependencies, created and matured a project WETH/avUSD
+pool, deployed exact pinned Aqua plus the complete AquaVol graph, wrote and
+shipped the covered-call position, and settled a distinct-taker CALL purchase.
+
+The mature TWAP was `3,799.749856` avUSD/WETH. One CALL settled for
+`61.430458` avUSD, leaving 9 virtual CALL and producing a higher unchanged-
+strategy next ask of `62.646903` avUSD. Ten WETH of collateral remained against
+10 CALL total supply. All AquaVol addresses, funding, time advancement, and
+transactions in this evidence are local to the fork and are not public
+deployment claims.

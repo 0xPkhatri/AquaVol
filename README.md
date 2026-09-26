@@ -13,10 +13,10 @@ with Aqua virtual balances.
 The **custom SwapVM router, local Aqua settlement path, guarded Uniswap V3 TWAP
 spot oracle, bounded volatility registry, fixed-point Black-Scholes libraries,
 fair-value opcode, inventory-skew opcode, and dynamic Aqua repricing are
-implemented and tested**. Base Sepolia canonical-pool verification is available
-as an explicit read-only fork check. Deployment architecture is specified, but
-deployment tooling, the browser application, and the public deployment do not
-exist yet. No backend is required for the canonical demo.
+implemented and tested**. Base Sepolia canonical-pool verification, deployment
+preflight tooling, and a pinned full-deployment fork rehearsal are available.
+The browser application and public deployment do not exist yet. No backend is
+required for the canonical demo.
 
 ## Intended stack
 
@@ -138,6 +138,7 @@ Current working documents:
 - [Uniswap provenance](docs/UNISWAP_PROVENANCE.md)
 - [PRBMath provenance](docs/PRB_MATH_PROVENANCE.md)
 - [Base Sepolia deployment plan](docs/BASE_SEPOLIA_DEPLOYMENT_PLAN.md)
+- [Base Sepolia fork rehearsal](docs/BASE_SEPOLIA_REHEARSAL.md)
 - [Repository policy](docs/REPOSITORY_POLICY.md)
 
 ## Event references

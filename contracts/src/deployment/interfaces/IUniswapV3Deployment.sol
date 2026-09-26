@@ -22,6 +22,10 @@ interface IUniswapV3PeripheryIdentity {
     function WETH9() external view returns (address);
 }
 
+interface IUniswapV3PoolDeployment {
+    function increaseObservationCardinalityNext(uint16 observationCardinalityNext) external;
+}
+
 interface INonfungiblePositionManagerMinimal is IUniswapV3PeripheryIdentity {
     struct MintParams {
         address token0;
@@ -60,4 +64,21 @@ interface IWETH9Minimal {
     function balanceOf(address account) external view returns (uint256);
 
     function decimals() external view returns (uint8);
+}
+
+interface ISwapRouter02Minimal is IUniswapV3PeripheryIdentity {
+    struct ExactInputSingleParams {
+        address tokenIn;
+        address tokenOut;
+        uint24 fee;
+        address recipient;
+        uint256 amountIn;
+        uint256 amountOutMinimum;
+        uint160 sqrtPriceLimitX96;
+    }
+
+    function exactInputSingle(ExactInputSingleParams calldata params)
+        external
+        payable
+        returns (uint256 amountOut);
 }

@@ -56,6 +56,15 @@ spacing, position-manager and router factory/WETH bindings, and WETH decimals.
 The script has no broadcast path. Later state-changing scripts must separately
 prove that the signing key derives the reviewed operator address.
 
+## Completed fork rehearsal
+
+Prompt 0010 checkpoint 3 rehearses all ordered stages on pinned Base Sepolia
+block `47,324,978`. It uses the official Uniswap deployments to create and
+mature a local WETH/avUSD pool, deploys exact pinned Aqua and the AquaVol graph,
+ships the position, and settles a distinct-taker trade with inventory repricing.
+See [the rehearsal record](BASE_SEPOLIA_REHEARSAL.md). Its addresses and state
+are fork-local and MUST NOT be placed in the public deployment manifest.
+
 ## Operational rules
 
 - Use one dedicated testnet-only operator for deployer, volatility updater,

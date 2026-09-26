@@ -126,6 +126,19 @@ Run only the local deployment-tooling tests:
 forge test --offline --match-path 'test/deployment/*.t.sol' -vv
 ```
 
+Run the opt-in complete deployment rehearsal on the pinned Base Sepolia fork:
+
+```bash
+RUN_BASE_SEPOLIA_REHEARSAL=true \
+BASE_SEPOLIA_RPC_URL=https://sepolia.base.org \
+forge test --match-contract BaseSepoliaDeploymentRehearsalTest -vv
+```
+
+The rehearsal creates and matures a project WETH/avUSD V3 pool, deploys the
+complete AquaVol graph, ships the strategy, and settles one inventory-repricing
+trade. Every created address and transaction remains local to the fork. See the
+[rehearsal evidence](../docs/BASE_SEPOLIA_REHEARSAL.md).
+
 ## Volatility trust boundary
 
 `VolatilityRegistry` stores 18-decimal annualized implied volatility keyed by

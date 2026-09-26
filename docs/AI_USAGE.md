@@ -22,9 +22,13 @@ As of 2026-09-26, AI assistance has been used to:
 - implement and test the option lifecycle, Aqua/SwapVM integration, guarded
   Uniswap TWAP adapter, volatility registry, fixed-point pricing, and fair-value
   opcode under human-reviewed phase prompts;
-- implement and test inventory-aware pricing and dynamic Aqua repricing; and
+- implement and test inventory-aware pricing and dynamic Aqua repricing;
 - draft the review-gated Base Sepolia deployment architecture and operational
-  safety boundaries.
+  safety boundaries;
+- implement and test the capped demo token and read-only deployment preflight;
+  and
+- implement and run the deterministic full-deployment Base Sepolia fork
+  rehearsal.
 
 No browser, backend, or public deployment implementation has been generated at
 this stage.
