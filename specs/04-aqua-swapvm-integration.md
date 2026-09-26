@@ -3,7 +3,7 @@
 ## Status
 
 - Version: 0.4
-- State: custom-router unit foundation implemented; modified settlement pending
+- State: custom-router local settlement implemented; production pricing pending
 - Implementation authorized: Prompt 0006 checkpoints only
 
 ## Integration objective

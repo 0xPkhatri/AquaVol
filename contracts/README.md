@@ -79,6 +79,12 @@ Run only the custom-router unit suite:
 forge test --offline --match-path test/swapvm/AquaVolSwapVMRouter.t.sol -vv
 ```
 
+Run the modified-router settlement evidence:
+
+```bash
+forge test --offline --match-contract AquaVolSwapVMSettlementTest -vv
+```
+
 The suite includes unit tests, a 512-run fractional exercise fuzz test, and
 stateful invariants covering lifecycle transitions and collateral solvency.
 

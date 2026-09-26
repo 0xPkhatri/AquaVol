@@ -101,14 +101,15 @@ deployment evidence, and sponsor confirmation if available.
 
 Verified on 2026-09-26 after adding the isolated AquaVol extension:
 
-- AquaVol Foundry project: 32 tests passed, 0 failed;
+- AquaVol Foundry project: 37 tests passed, 0 failed;
 - custom-router unit suite: 11 tests passed, 0 failed;
+- modified-router settlement suite: 5 tests passed, 0 failed;
 - Python reference: 11 tests passed, 0 failed;
 - pinned Aqua upstream suite: 50 tests passed, 0 failed;
 - pinned SwapVM Aqua suites: 95 tests passed, 0 failed.
 
-Both protocol submodules remained clean at their recorded revisions. This
-checkpoint verifies encoding, dispatch, fixed-price register calculation,
-failure guards, upstream delegation, and router bindings. It does not yet prove
-token settlement through the modified router; that belongs to Prompt 0006
-Checkpoint 3.
+Both protocol submodules remained clean at their recorded revisions. Prompt
+0006 now verifies encoding, dispatch, fixed-price register calculation, failure
+guards, upstream delegation, router bindings, and reconciled CALL/USDC token
+settlement through Aqua. It does not verify production option pricing, oracles,
+or a public deployment.

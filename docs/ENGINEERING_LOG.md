@@ -151,3 +151,19 @@ The instruction supports only exact-output quote-to-CALL calculation and has no
 external calls or persistent storage. Acceptance of this unit layer does not
 claim modified-router settlement; Prompt 0006 Checkpoint 3 must demonstrate
 that separately through Aqua.
+
+## E-012 — Accept modified-router Aqua settlement
+
+- Date: 2026-09-26
+- State: accepted as local integration evidence
+
+The AquaVol router quotes and settles an exact-output one-CALL purchase for the
+configured `61.505937` USDC proof premium. Real maker/trader transfers and Aqua
+virtual balances reconcile, while the OptionSeries WETH collateral remains
+untouched and fully backs live CALL supply.
+
+The modified router also settles the pinned upstream constant-product program
+at its independently expected `555.555556` USDC result. Maximum-input failure,
+altered order bytes, and insufficient CALL liquidity all revert without partial
+state changes. This accepts the custom dispatch and settlement path only; the
+constant-price instruction remains temporary and is not production valuation.

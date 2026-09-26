@@ -3,7 +3,7 @@
 ## Status
 
 - Version: 0.1
-- State: deterministic opcode and router implemented; integration pending
+- State: deterministic opcode, router, and local settlement verified
 - Updated: 2026-09-26
 - Implementation authorized: Prompt 0006 checkpoints 2 and 3 only
 

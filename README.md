@@ -10,11 +10,11 @@ and a pinned local Aqua/SwapVM integration harness. The unmodified protocol
 baseline settles a tested CALL/USDC trade and reconciles real token transfers
 with Aqua virtual balances.
 
-The **custom SwapVM router foundation is implemented and unit tested**. It adds
-an isolated deterministic proof opcode without modifying the pinned upstream
-submodules. Settlement through this modified router is the next checkpoint.
-Browser, backend, oracle, public deployment, and production pricing
-implementations do not exist yet.
+The **custom SwapVM router foundation and local Aqua settlement path are
+implemented and tested**. An exact-output CALL purchase settles at the
+deterministic proof premium while unchanged upstream programs still execute
+through the modified router. Browser, backend, oracle, public deployment, and
+production pricing implementations do not exist yet.
 
 ## Intended stack
 
@@ -105,6 +105,8 @@ These contracts are hackathon software and have not been audited. See the
 [contract notes](contracts/README.md) for the current scope and boundaries.
 The [baseline swap evidence](docs/BASELINE_SWAP_EVIDENCE.md) records the local
 unmodified Aqua/SwapVM settlement proof.
+The [custom-router settlement evidence](docs/CUSTOM_ROUTER_SETTLEMENT_EVIDENCE.md)
+records the corresponding proof through the AquaVol opcode layer.
 
 ## Development approach
 
