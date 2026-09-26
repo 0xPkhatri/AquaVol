@@ -2,9 +2,10 @@
 
 ## Status
 
-- Version: 0.2
-- State: approved for reference implementation
-- Implementation authorized: Python reference and vectors only
+- Version: 0.3
+- State: reference math implemented; Uniswap spot-oracle architecture approved
+- Implementation authorized: Prompt 0007 checkpoints only; Solidity
+  Black-Scholes remains unauthorized
 
 ## Scope
 
@@ -164,7 +165,8 @@ maker-favorable settlement rounding are tested separately.
 
 The fair-value instruction MUST obtain:
 
-- spot and spot update timestamp;
+- spot from the strategy-bound Uniswap V3 TWAP adapter, including its averaging
+  window, latest initialized observation time, and liquidity result;
 - implied volatility and volatility update timestamp.
 
 It MUST reject:
@@ -172,7 +174,9 @@ It MUST reject:
 - zero spot;
 - spot or volatility outside the approved domain;
 - an update timestamp in the future beyond a small documented clock tolerance;
-- spot older than `maxSpotAge`;
+- a Uniswap pool whose latest initialized observation is older than
+  `maxObservationAge` or whose history cannot cover the TWAP window;
+- harmonic-mean liquidity below the strategy-bound minimum;
 - volatility older than `maxVolatilityAge`;
 - trading at or after expiry.
 

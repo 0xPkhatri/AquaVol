@@ -2,7 +2,7 @@
 
 ## Status
 
-- Version: 0.1
+- Version: 0.2
 - State: draft for security review
 - Production readiness claimed: no
 
@@ -23,7 +23,8 @@ provide evidence for the stated bounded design only.
 
 ### Trusted MVP components
 
-- administrator updates to the mock spot oracle;
+- economic quality and manipulation resistance of the selected Uniswap V3
+  market, especially when project-seeded on a testnet;
 - administrator updates to the volatility registry;
 - correctness of pinned upstream Aqua, SwapVM, SDK, math, and token libraries;
 - Base Sepolia infrastructure and RPC availability.
@@ -106,6 +107,18 @@ Each oracle read MUST validate:
 Oracle addresses MUST be bound into the immutable strategy. Administrator
 updates MUST emit events. Demo administration keys MUST hold no collateral.
 
+For a Uniswap V3 TWAP read, validation MUST additionally cover:
+
+- the pool returned by the configured official factory for the exact token pair
+  and fee tier;
+- token order and decimal normalization;
+- nonzero current and harmonic-mean liquidity;
+- sufficient initialized history for the complete configured window;
+- a recently written latest observation rather than silently extrapolating an
+  inactive testnet pool indefinitely;
+- an optional current-price versus TWAP deviation circuit breaker that only
+  halts pricing and never substitutes the current price.
+
 ## Arithmetic and decimals
 
 - WAD and token-native values MUST use distinct types or clearly named
@@ -186,4 +199,3 @@ Security review is complete for the hackathon MVP only when:
 - unresolved high-severity findings are visible and block production claims;
 - the complete demo can fail safely under stale price, exhausted liquidity,
   and adverse slippage conditions.
-

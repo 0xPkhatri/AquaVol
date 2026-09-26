@@ -2,10 +2,10 @@
 
 ## Status
 
-- Version: 0.3
+- Version: 0.4
 - State: approved MVP baseline
-- Implementation authorized: reference math, OptionSeries, unmodified protocol
-  baseline, and Prompt 0006 custom-router foundation
+- Implementation authorized: reference math, OptionSeries, protocol routing,
+  and Prompt 0007 Uniswap spot-oracle checkpoints
 - Network target: Base Sepolia
 
 The words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** describe normative
@@ -49,9 +49,11 @@ The trader:
 
 ### Administrator
 
-For the MVP, an administrator updates the demo spot oracle and volatility
-registry. This role MUST NOT control collateral or trader tokens. The UI and
-documentation MUST identify these market inputs as trusted demo inputs.
+For the MVP, an administrator updates only the volatility registry. Spot comes
+from the strategy-bound Uniswap V3 TWAP oracle. This role MUST NOT control
+collateral or trader tokens. The UI and documentation MUST identify volatility
+as a trusted demo input and disclose whether the selected Uniswap pool is a
+project-seeded test market.
 
 ## Canonical market
 
@@ -182,9 +184,10 @@ After the canonical path is complete, the project MAY add:
 
 ## Product acceptance
 
-The one-writer restriction, canonical parameters, administrator-controlled demo
-inputs, and buyback support are approved for the MVP. Prompt 0004 authorized
-the isolated `OptionSeries`; Prompt 0005 authorized the pinned unmodified
-Aqua/SwapVM baseline; Prompt 0006 authorizes only the custom-router foundation
-described in its checkpoints. Oracle, production pricing, deployment, and
-browser implementation still require later phase prompts.
+The one-writer restriction, canonical parameters, administrator-controlled
+volatility, and buyback support are approved for the MVP. Prompt 0004
+authorized `OptionSeries`; Prompt 0005 authorized the pinned unmodified
+Aqua/SwapVM baseline; Prompt 0006 completed the custom-router foundation;
+Prompt 0007 authorizes only the Uniswap spot-oracle checkpoints. Production
+pricing, volatility-registry code, deployment, and browser implementation still
+require later phase prompts.

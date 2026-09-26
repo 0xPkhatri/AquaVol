@@ -11,10 +11,9 @@ baseline settles a tested CALL/USDC trade and reconciles real token transfers
 with Aqua virtual balances.
 
 The **custom SwapVM router foundation and local Aqua settlement path are
-implemented and tested**. An exact-output CALL purchase settles at the
-deterministic proof premium while unchanged upstream programs still execute
-through the modified router. Browser, backend, oracle, public deployment, and
-production pricing implementations do not exist yet.
+implemented and tested**. The next phase adds a guarded Uniswap V3 TWAP spot
+oracle for Base Sepolia. Browser, backend, public deployment, volatility
+registry, and production option pricing implementations do not exist yet.
 
 ## Intended stack
 
@@ -124,9 +123,12 @@ Current working documents:
 - [Security invariants](specs/05-security-invariants.md)
 - [Demo acceptance](specs/06-demo-acceptance.md)
 - [Custom SwapVM router](specs/07-custom-swapvm-router.md)
+- [Uniswap V3 TWAP oracle](specs/08-uniswap-v3-twap-oracle.md)
 - [Engineering log](docs/ENGINEERING_LOG.md)
 - [Dependency register](docs/DEPENDENCY_REGISTER.md)
 - [Protocol provenance](docs/PROTOCOL_PROVENANCE.md)
+- [Uniswap provenance](docs/UNISWAP_PROVENANCE.md)
+- [Base Sepolia deployment plan](docs/BASE_SEPOLIA_DEPLOYMENT_PLAN.md)
 - [Repository policy](docs/REPOSITORY_POLICY.md)
 
 ## Event references

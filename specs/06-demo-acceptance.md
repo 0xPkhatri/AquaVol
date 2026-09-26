@@ -2,10 +2,10 @@
 
 ## Status
 
-- Version: 0.3
+- Version: 0.4
 - State: approved demo baseline
-- Implementation authorized: implemented local foundations and Prompt 0006
-  custom-router checkpoints only
+- Implementation authorized: implemented local foundations and Prompt 0007
+  Uniswap spot-oracle checkpoints only
 
 ## Demo objective
 
@@ -145,7 +145,8 @@ The application MUST provide:
 - loading, rejection, confirmation, and failure states;
 - transaction and contract explorer links;
 - token amounts with correct symbols and decimals;
-- a visible disclosure for administrator-controlled demo oracles.
+- a visible disclosure for administrator-controlled volatility and any
+  project-seeded Uniswap demo market.
 
 A SwapVM trace panel is strongly preferred but MUST use real decoded values
 rather than a hard-coded animation.

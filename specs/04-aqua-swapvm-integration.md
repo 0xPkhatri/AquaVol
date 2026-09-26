@@ -2,9 +2,10 @@
 
 ## Status
 
-- Version: 0.4
+- Version: 0.5
 - State: custom-router local settlement implemented; production pricing pending
-- Implementation authorized: Prompt 0006 checkpoints only
+- Implementation authorized: completed Prompt 0006 path and Prompt 0007
+  spot-oracle checkpoints only
 
 ## Integration objective
 
@@ -33,7 +34,7 @@ The intended Base Sepolia topology is:
 
 ```text
 OptionSeries
-MockSpotOracle
+UniswapV3TwapOracle
 VolatilityRegistry
 Official Aqua contract or exact-source redeployment
 AquaVol SwapVM router derived from the pinned official implementation
@@ -67,7 +68,8 @@ The immutable strategy program MUST bind at least:
 - USDC quote token;
 - strike;
 - expiry;
-- spot-oracle address and maximum age;
+- Uniswap spot-oracle address, TWAP window, minimum harmonic-mean liquidity,
+  and maximum latest-observation age;
 - volatility-registry address and maximum age;
 - initial CALL inventory `Q0`;
 - inventory gamma;

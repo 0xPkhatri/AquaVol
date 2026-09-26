@@ -167,3 +167,24 @@ at its independently expected `555.555556` USDC result. Maximum-input failure,
 altered order bytes, and insufficient CALL liquidity all revert without partial
 state changes. This accepts the custom dispatch and settlement path only; the
 constant-price instruction remains temporary and is not production valuation.
+
+## E-013 — Use Uniswap V3 TWAP for spot input
+
+- Date: 2026-09-26
+- State: accepted for Prompt 0007
+
+AquaVol will replace the administrator-updated spot input with a strategy-bound
+Uniswap V3 time-weighted average. Implied volatility remains a separately
+bounded administrator input because a spot TWAP is not implied volatility.
+
+The generic adapter will validate the official factory, exact pool and pair,
+fee tier, token order, decimal normalization, full observation window, latest
+observation age, harmonic-mean liquidity, and an optional deviation circuit
+breaker. It will fail closed and will not fall back to `slot0()` pricing.
+
+Read-only Base Sepolia checks found canonical WETH/Circle test-USDC pools at all
+three standard fee tiers. Their observed prices differed materially from each
+other and from the canonical AquaVol scenario. The public deterministic demo
+will therefore use canonical Base Sepolia WETH with clearly labeled DemoUSDC in
+a project-seeded pool created by the official V3 factory. The existing 0.30%
+canonical pool remains a comparison feed, not the authoritative demo input.
