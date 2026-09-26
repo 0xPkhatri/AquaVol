@@ -1,8 +1,9 @@
 # AquaVol contracts
 
-This Foundry project contains the isolated `OptionSeries` lifecycle. It does
-not yet contain Aqua, SwapVM, pricing-oracle, deployment, or production token
-integration.
+This Foundry project contains the isolated `OptionSeries` lifecycle and pinned,
+unmodified Aqua and SwapVM submodules. The protocol deployment smoke test is
+present, but AquaVol swap integration, pricing-oracle code, public deployment,
+and production token integration are not.
 
 ## Behavior
 
@@ -22,12 +23,31 @@ non-rebasing ERC-20 behavior is an explicit MVP assumption.
 
 ## Verify
 
+After cloning AquaVol, initialize the pinned protocol submodules and install
+their lockfile dependencies:
+
+```bash
+git submodule update --init --recursive
+yarn --cwd contracts/lib/aqua install --frozen-lockfile
+yarn --cwd contracts/lib/swap-vm install --frozen-lockfile
+```
+
 Install Foundry with Solidity 0.8.30 available, then run from this directory:
 
 ```bash
 forge fmt --check
 forge build
 forge test
+```
+
+Run the upstream protocol verification from the repository root:
+
+```bash
+cd contracts/lib/aqua
+forge test --offline
+
+cd ../swap-vm
+forge test --offline --match-path 'test/solidity/*Aqua*.t.sol'
 ```
 
 The suite includes unit tests, a 512-run fractional exercise fuzz test, and

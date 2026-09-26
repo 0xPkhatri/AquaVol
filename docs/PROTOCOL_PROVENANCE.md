@@ -10,8 +10,8 @@ been imported. Import status and local modifications must remain explicit.
 
 | Component | Repository | Revision | License | Current use |
 | --- | --- | --- | --- | --- |
-| Aqua contracts | `https://github.com/1inch/aqua` | `ef24220ed9647555727b06867bf509cd6959d84b` | `LicenseRef-Degensoft-Aqua-Source-1.1` | Pinned for the unmodified local baseline; not yet imported |
-| SwapVM contracts | `https://github.com/1inch/swap-vm` | `feb16411738331f7d05ae71d4a664154068018fc` | `LicenseRef-Degensoft-SwapVM-1.1` | Pinned for the unmodified local baseline; not yet imported |
+| Aqua contracts | `https://github.com/1inch/aqua` | `ef24220ed9647555727b06867bf509cd6959d84b` | `LicenseRef-Degensoft-Aqua-Source-1.1` | Imported unchanged as `contracts/lib/aqua` Git submodule |
+| SwapVM contracts | `https://github.com/1inch/swap-vm` | `feb16411738331f7d05ae71d4a664154068018fc` | `LicenseRef-Degensoft-SwapVM-1.1` | Imported unchanged as `contracts/lib/swap-vm` Git submodule |
 | Aqua TypeScript SDK | `https://github.com/1inch/sdks/tree/master/typescript/aqua` | `3dbd4fd17fdc9fb814b8d55b3efcf4a39eddb32c` | `LicenseRef-Degensoft-Aqua-Source-1.1` | Reference only; TypeScript installation deferred |
 
 The revisions were resolved from the official upstream branches on
@@ -34,19 +34,43 @@ advancing a branch reference.
 
 This record is engineering provenance, not legal advice.
 
-## Import policy
+## Import record
 
-Checkpoint 2 may import only the files needed to compile and exercise the
-official local baseline. The import must record:
+Checkpoint 2 imports the complete upstream repositories as Git submodules.
+This keeps their history, license files, third-party notices, source, tests,
+and lockfiles intact while the AquaVol commit records exact Git revisions.
 
-- the exact mechanism used, such as a pinned Git submodule or vendored source;
-- every upstream directory included;
-- preserved license and notice files;
-- a clean diff proving there are no source modifications;
-- the commands used to compile and run upstream tests.
+Neither submodule contains local source modifications. Their JavaScript
+dependencies are local-only installations produced from the committed Yarn
+lockfiles and are not repository content.
 
 The Aqua SDK must not be installed merely for the Solidity baseline. It becomes
 eligible when the shared TypeScript encoding package is authorized.
+
+## Verification record
+
+Verified on 2026-09-26 with Foundry 1.5.1-stable and Solidity 0.8.30:
+
+```bash
+yarn --cwd contracts/lib/aqua install --frozen-lockfile
+yarn --cwd contracts/lib/swap-vm install --frozen-lockfile
+
+cd contracts/lib/aqua
+forge test --offline
+
+cd ../swap-vm
+forge test --offline --match-path 'test/solidity/*Aqua*.t.sol'
+```
+
+Results:
+
+- Aqua: 50 tests passed, 0 failed;
+- SwapVM Aqua suites: 95 tests passed, 0 failed;
+- both submodules remained at their recorded commits with clean tracked state.
+
+The AquaVol root smoke test deploys `Aqua` and `AquaSwapVMRouter` from these
+submodules and verifies the router's immutable Aqua and WETH bindings. It does
+not claim swap integration; that evidence belongs to Checkpoint 3.
 
 ## Network finding
 
