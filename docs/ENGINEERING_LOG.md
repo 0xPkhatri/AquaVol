@@ -84,3 +84,17 @@ lifecycle mutation with a reentrancy guard.
 Reason: proving collateral solvency and exercise behavior independently keeps
 later trading and pricing failures outside the option holder's settlement
 rights.
+
+## E-008 — Prove the unmodified protocol path first
+
+- Date: 2026-09-26
+- State: accepted
+
+The Aqua and SwapVM integration is split into three human-reviewed commits:
+provenance and specification, a pinned upstream harness, and an unmodified
+end-to-end swap test. Custom opcodes are not authorized until that baseline
+reconciles maker, trader, and Aqua virtual balances.
+
+Reason: this separates upstream integration failures from errors introduced by
+AquaVol's later mathematical instructions and produces meaningful Git history
+without fragmenting the work into cosmetic commits.

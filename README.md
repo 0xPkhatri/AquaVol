@@ -118,6 +118,7 @@ Current working documents:
 - [Demo acceptance](specs/06-demo-acceptance.md)
 - [Engineering log](docs/ENGINEERING_LOG.md)
 - [Dependency register](docs/DEPENDENCY_REGISTER.md)
+- [Protocol provenance](docs/PROTOCOL_PROVENANCE.md)
 - [Repository policy](docs/REPOSITORY_POLICY.md)
 
 ## Event references

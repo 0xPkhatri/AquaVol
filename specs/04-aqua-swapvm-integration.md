@@ -2,9 +2,9 @@
 
 ## Status
 
-- Version: 0.1
-- State: draft for protocol review
-- Implementation authorized: no
+- Version: 0.2
+- State: approved unmodified baseline
+- Implementation authorized: dependency pinning and unmodified local baseline only
 
 ## Integration objective
 
@@ -214,12 +214,20 @@ Tests or scripts MUST demonstrate in dependency order:
 6. quote, swap, post-swap repricing, sell-back, and exercise;
 7. verified Base Sepolia deployment and public transfer transaction.
 
-## Unresolved before approval
+## Approved baseline pins
 
-- Pinned upstream Aqua, SwapVM, and SDK commits.
+- Aqua: `ef24220ed9647555727b06867bf509cd6959d84b`
+- SwapVM: `feb16411738331f7d05ae71d4a664154068018fc`
+- Aqua SDK reference: `3dbd4fd17fdc9fb814b8d55b3efcf4a39eddb32c`
+
+Prompt 0005 authorizes an unmodified local Aqua/SwapVM swap in three reviewed
+checkpoints. Custom instructions, pricing code, and public deployment remain
+unauthorized.
+
+## Unresolved after baseline approval
+
 - Exact Base Sepolia Aqua deployment approach.
 - Test-token addresses and acquisition method.
 - Concrete opcode numbers after upstream inspection.
 - Whether the modified router needs any custom storage beyond inherited state;
   the preferred answer is no.
-
