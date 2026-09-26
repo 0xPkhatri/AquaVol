@@ -139,6 +139,24 @@ complete AquaVol graph, ships the strategy, and settles one inventory-repricing
 trade. Every created address and transaction remains local to the fork. See the
 [rehearsal evidence](../docs/BASE_SEPOLIA_REHEARSAL.md).
 
+## Staged public deployment
+
+The first recoverable stage deploys only `AquaVolDemoUSDC`. Before simulation,
+set `OPERATOR_ADDRESS` in the ignored `.env` to the public address derived from
+the disposable testnet `PRIVATE_KEY`. The script fails if they do not match.
+
+Simulate stage 1 without broadcasting:
+
+```bash
+forge script script/DeployDemoUSDC.s.sol:DeployDemoUSDC \
+  --rpc-url https://sepolia.base.org \
+  -vv
+```
+
+Do not add `--broadcast` until the resolved signer, balance, gas estimate, and
+predicted contract address have been reviewed. Approval for stage 1 does not
+authorize pool creation or any later stage.
+
 ## Volatility trust boundary
 
 `VolatilityRegistry` stores 18-decimal annualized implied volatility keyed by
