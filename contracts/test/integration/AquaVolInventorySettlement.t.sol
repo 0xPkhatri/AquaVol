@@ -22,6 +22,7 @@ import { InventoryPricing } from "../../src/pricing/InventoryPricing.sol";
 import { AquaVolFairValue } from "../../src/swapvm/AquaVolFairValue.sol";
 import { AquaVolInventorySkew } from "../../src/swapvm/AquaVolInventorySkew.sol";
 import { AquaVolSwapVMRouter } from "../../src/swapvm/AquaVolSwapVMRouter.sol";
+import { AquaVolPricingEngine } from "../../src/swapvm/AquaVolPricingEngine.sol";
 import { MockUniswapV3Factory, MockUniswapV3Pool } from "../oracles/mocks/MockUniswapV3.sol";
 
 interface InventorySettlementVm {
@@ -72,8 +73,14 @@ contract AquaVolInventorySettlementTest {
         aqua = new Aqua();
         weth = new MockERC20("Wrapped Ether", "WETH", 18);
         usdc = new MockERC20("USD Coin", "USDC", 6);
+        AquaVolPricingEngine pricingEngine = new AquaVolPricingEngine();
         router = new AquaVolSwapVMRouter(
-            address(aqua), address(weth), address(this), "AquaVol SwapVM", "1"
+            address(aqua),
+            address(weth),
+            address(this),
+            address(pricingEngine),
+            "AquaVol SwapVM",
+            "1"
         );
         taker = new MockTaker(aqua, router, address(this));
 

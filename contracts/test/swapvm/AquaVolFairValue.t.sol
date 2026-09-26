@@ -12,6 +12,7 @@ import { BlackScholes } from "../../src/pricing/BlackScholes.sol";
 import { AquaVolFairValue, IAquaVolSpotOracle } from "../../src/swapvm/AquaVolFairValue.sol";
 import { AquaVolOpcode } from "../../src/swapvm/AquaVolOpcode.sol";
 import { AquaVolOpcodes } from "../../src/swapvm/AquaVolOpcodes.sol";
+import { AquaVolPricingEngine } from "../../src/swapvm/AquaVolPricingEngine.sol";
 
 interface FairValueVm {
     function warp(uint256 newTimestamp) external;
@@ -97,6 +98,8 @@ contract MockFairValueOracle is IAquaVolSpotOracle {
     contract AquaVolFairValueHarness is AquaVolOpcodes {
         uint256 public marker = 7;
 
+        constructor(address pricingEngine) AquaVolOpcodes(pricingEngine) { }
+
         function build(
             address callToken,
             address quoteToken,
@@ -151,7 +154,7 @@ contract MockFairValueOracle is IAquaVolSpotOracle {
 
         function setUp() public {
             VM.warp(NOW);
-            harness = new AquaVolFairValueHarness();
+            harness = new AquaVolFairValueHarness(address(new AquaVolPricingEngine()));
             underlying = new MockERC20("Wrapped Ether", "WETH", 18);
             quote = new MockERC20("USD Coin", "USDC", 6);
             series = _deploySeries();

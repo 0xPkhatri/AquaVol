@@ -15,8 +15,11 @@ spot oracle, bounded volatility registry, fixed-point Black-Scholes libraries,
 fair-value opcode, inventory-skew opcode, and dynamic Aqua repricing are
 implemented and tested**. Base Sepolia canonical-pool verification, deployment
 preflight tooling, and a pinned full-deployment fork rehearsal are available.
-The browser application and public deployment do not exist yet. No backend is
-required for the canonical demo.
+A partial Base Sepolia deployment now includes the demo asset, seeded Uniswap
+V3 pool, exact-source Aqua, size-safe custom SwapVM router and pricing engine,
+volatility registry, guarded TWAP oracle, immutable option series, and a live
+fully collateralized Aqua strategy. The distinct-trader transaction and browser
+application remain pending. No backend is required for the canonical demo.
 
 ## Intended stack
 
@@ -111,6 +114,31 @@ The [custom-router settlement evidence](docs/CUSTOM_ROUTER_SETTLEMENT_EVIDENCE.m
 records the corresponding proof through the AquaVol opcode layer.
 The [Base Sepolia Uniswap evidence](docs/BASE_SEPOLIA_UNISWAP_EVIDENCE.md)
 documents the opt-in canonical-pool observation check and its limitations.
+The [Base Sepolia deployment record](docs/BASE_SEPOLIA_DEPLOYMENT.md) tracks the
+current public addresses, transactions, verification checks, and pending work.
+
+## Uniswap integration
+
+AquaVol creates a project-seeded WETH/avUSD pool through the official Base
+Sepolia Uniswap V3 position manager and uses the pool exclusively as the
+guarded spot input to option pricing. The adapter verifies factory identity,
+token order, fee tier, a complete 30-minute observation window, latest
+observation freshness, current and harmonic liquidity, spot/TWAP deviation,
+and price bounds on every read.
+
+Reviewers can verify the integration directly in:
+
+- [`UniswapV3TwapOracle.sol`](contracts/src/oracles/uniswap/UniswapV3TwapOracle.sol) — guarded onchain TWAP reads
+- [`UniswapV3OracleMath.sol`](contracts/src/oracles/uniswap/UniswapV3OracleMath.sol) — cumulative-tick and normalized quote calculation
+- [`BootstrapUniswapV3Pool.s.sol`](contracts/script/BootstrapUniswapV3Pool.s.sol) — official factory and position-manager usage
+- [`WriteTwapObservation.s.sol`](contracts/script/WriteTwapObservation.s.sol) — full-window check and SwapRouter02 observation write
+- [`BaseSepoliaDeploymentRehearsal.t.sol`](contracts/test/fork/BaseSepoliaDeploymentRehearsal.t.sol) — end-to-end fork proof
+- [`FEEDBACK.md`](FEEDBACK.md) — required Uniswap developer feedback
+
+Public addresses, pool parameters, and transaction hashes are listed in the
+[Base Sepolia deployment record](docs/BASE_SEPOLIA_DEPLOYMENT.md). The pool uses
+the project-issued `avUSD` demo token and must not be interpreted as a canonical
+USDC or production oracle market.
 
 ## Development approach
 

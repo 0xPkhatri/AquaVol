@@ -13,6 +13,7 @@ import { IAquaVolSpotOracle } from "../../src/swapvm/AquaVolFairValue.sol";
 import { AquaVolInventorySkew } from "../../src/swapvm/AquaVolInventorySkew.sol";
 import { AquaVolOpcode } from "../../src/swapvm/AquaVolOpcode.sol";
 import { AquaVolOpcodes } from "../../src/swapvm/AquaVolOpcodes.sol";
+import { AquaVolPricingEngine } from "../../src/swapvm/AquaVolPricingEngine.sol";
 
 contract MockInventorySeries is MockERC20 {
     address public underlying;
@@ -71,6 +72,8 @@ contract MockInventoryOracle is IAquaVolSpotOracle {
     contract AquaVolInventorySkewHarness is AquaVolOpcodes {
         uint256 public marker = 7;
 
+        constructor(address pricingEngine) AquaVolOpcodes(pricingEngine) { }
+
         function build(
             address callToken,
             address quoteToken,
@@ -122,7 +125,7 @@ contract MockInventoryOracle is IAquaVolSpotOracle {
         MockInventoryOracle private oracle;
 
         function setUp() public {
-            harness = new AquaVolInventorySkewHarness();
+            harness = new AquaVolInventorySkewHarness(address(new AquaVolPricingEngine()));
             underlying = new MockERC20("Wrapped Ether", "WETH", 18);
             quote = new MockERC20("USD Coin", "USDC", 6);
             series = new MockInventorySeries(address(underlying), address(quote));

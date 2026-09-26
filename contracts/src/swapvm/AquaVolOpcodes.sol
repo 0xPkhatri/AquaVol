@@ -9,20 +9,39 @@ import { Context } from "@1inch/swap-vm/contracts/libs/VM.sol";
 import { AquaOpcodes } from "@1inch/swap-vm/contracts/opcodes/AquaOpcodes.sol";
 
 import { AquaVolOpcode } from "./AquaVolOpcode.sol";
-import { AquaVolFairValue } from "./AquaVolFairValue.sol";
-import { AquaVolInventorySkew } from "./AquaVolInventorySkew.sol";
+import { IAquaVolPricingEngine } from "./IAquaVolPricingEngine.sol";
 
 /// @notice Dispatches AquaVol instructions and delegates all other opcodes upstream.
 contract AquaVolOpcodes is AquaOpcodes {
+    IAquaVolPricingEngine public immutable PRICING_ENGINE;
+
+    error InvalidPricingEngine(address engine);
+
+    constructor(address pricingEngine) {
+        if (pricingEngine == address(0)) revert InvalidPricingEngine(pricingEngine);
+        PRICING_ENGINE = IAquaVolPricingEngine(pricingEngine);
+    }
+
     function _runOpcode(Context memory ctx, uint256 opcode, bytes calldata args)
         internal
         virtual
         override
     {
-        if (opcode == AquaVolOpcode.OPTION_FAIR_VALUE) {
-            AquaVolFairValue.exec(ctx, args);
-        } else if (opcode == AquaVolOpcode.OPTION_INVENTORY_SKEW) {
-            AquaVolInventorySkew.exec(ctx, args);
+        if (
+            opcode == AquaVolOpcode.OPTION_FAIR_VALUE
+                || opcode == AquaVolOpcode.OPTION_INVENTORY_SKEW
+        ) {
+            IAquaVolPricingEngine.Registers memory registers = IAquaVolPricingEngine.Registers({
+                tokenIn: ctx.query.tokenIn,
+                tokenOut: ctx.query.tokenOut,
+                isExactIn: ctx.query.isExactIn,
+                balanceIn: ctx.swap.balanceIn,
+                balanceOut: ctx.swap.balanceOut,
+                amountIn: ctx.swap.amountIn,
+                amountOut: ctx.swap.amountOut
+            });
+            (ctx.swap.amountIn, ctx.swap.amountOut) =
+                PRICING_ENGINE.execute(opcode, args, registers);
         } else {
             super._runOpcode(ctx, opcode, args);
         }

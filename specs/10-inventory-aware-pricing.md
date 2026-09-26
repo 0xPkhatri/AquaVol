@@ -41,6 +41,20 @@ upstream threshold validation and Aqua settlement
 register rather than recompute Black-Scholes or accept a taker-provided price.
 Neither instruction transfers tokens or mutates storage.
 
+### Runtime execution boundary
+
+On the deployable router, `0xd1` and `0xd2` are dispatched through an immutable
+`AquaVolPricingEngine`. The router supplies only the strategy arguments,
+token-direction query fields, Aqua balances already loaded into the SwapVM
+context, and current amount registers. The engine performs the same validations
+and mathematics specified below and returns the two amount registers.
+
+This split is an EIP-170 code-size boundary, not a new pricing authority. The
+engine is stateless and read-only; it cannot ship or dock an Aqua strategy,
+settle tokens, change series terms, update volatility, or alter the immutable
+program. Replacing the engine requires deploying a different router and
+shipping a strategy bound to that router.
+
 ## Immutable instruction encoding
 
 Opcode `0xd2` is `OPTION_INVENTORY_SKEW`. Its arguments are:

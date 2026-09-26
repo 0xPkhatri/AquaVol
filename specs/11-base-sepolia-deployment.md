@@ -3,11 +3,11 @@
 ## Status
 
 - Version: 0.2
-- State: deployment tooling and pinned fork rehearsal implemented; public
-  deployment pending
+- State: public market and Aqua position deployed; distinct-trader transaction
+  and final verification pending
 - Updated: 2026-09-26
-- Implementation authorization: Prompt 0010 checkpoints 1–3 complete;
-  checkpoint 4 requires review and a human-created checkpoint-3 commit
+- Implementation authorization: Prompt 0010 checkpoint 4 in progress under
+  explicit operator authorization; no repository commit or push is delegated
 
 ## Objective
 
@@ -39,6 +39,12 @@ Official pinned Aqua source MUST be used without local modification. AquaVol's
 modified SwapVM router MUST retain the recorded upstream revision, license,
 change notices, and reproducible source. Deployed bytecode and constructor
 inputs MUST be tied to the repository source commit in the manifest.
+
+The custom pricing implementation MAY use an immutable external computation
+engine when required to keep every deployed runtime below EIP-170. Such an
+engine MUST be stateless, MUST NOT move or approve tokens, and MUST receive only
+the strategy-bound arguments and current SwapVM query/register values. Its
+address and runtime size MUST be recorded and verified alongside the router.
 
 ## Testnet identities and trust disclosure
 
@@ -114,6 +120,8 @@ official Uniswap V3 factory + position manager
                           |
        official Aqua + AquaVolSwapVMRouter
                           |
+              immutable pricing engine
+                          |
              shipped Aqua strategy state
 ```
 
@@ -134,8 +142,9 @@ operationally unusable series.
    initialize once, expand observation capacity, and add reviewed liquidity.
 4. **TWAP maturity:** wait the full configured window and produce enough
    observations; do not shorten safety parameters merely to avoid waiting.
-5. **AquaVol graph:** deploy the oracle, registry, series, official Aqua, and
-   modified router in dependency order; verify immutable bindings.
+5. **AquaVol graph:** deploy the oracle, registry, series, official Aqua,
+   stateless pricing engine, and modified router in dependency order; verify
+   immutable bindings and EIP-170 runtime sizes.
 6. **Position:** update volatility, write collateralized CALL, approve exact
    token allowances, and ship the reviewed virtual balances.
 7. **Trade evidence:** use the distinct trader wallet to quote and settle a

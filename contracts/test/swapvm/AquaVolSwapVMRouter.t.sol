@@ -14,6 +14,7 @@ import { MockERC20 } from "../../src/mocks/MockERC20.sol";
 import { AquaVolInstructionBuilder } from "../../src/swapvm/AquaVolInstructionBuilder.sol";
 import { AquaVolOpcode } from "../../src/swapvm/AquaVolOpcode.sol";
 import { AquaVolOpcodes } from "../../src/swapvm/AquaVolOpcodes.sol";
+import { AquaVolPricingEngine } from "../../src/swapvm/AquaVolPricingEngine.sol";
 import { AquaVolSwapVMRouter } from "../../src/swapvm/AquaVolSwapVMRouter.sol";
 
 contract AquaVolBuilderHarness {
@@ -23,6 +24,8 @@ contract AquaVolBuilderHarness {
 }
 
 contract AquaVolOpcodeHarness is AquaVolOpcodes {
+    constructor(address pricingEngine) AquaVolOpcodes(pricingEngine) { }
+
     function run(
         uint256 opcode,
         bytes calldata args,
@@ -55,7 +58,7 @@ contract AquaVolSwapVMRouterTest {
 
     function setUp() public {
         builder = new AquaVolBuilderHarness();
-        opcodes = new AquaVolOpcodeHarness();
+        opcodes = new AquaVolOpcodeHarness(address(new AquaVolPricingEngine()));
         callToken = new MockERC20("AquaVol Call", "avCALL", 18);
         quoteToken = new MockERC20("USD Coin", "USDC", 6);
     }
@@ -105,13 +108,22 @@ contract AquaVolSwapVMRouterTest {
     function testRouterPreservesOfficialBindings() public {
         Aqua aqua = new Aqua();
         MockERC20 weth = new MockERC20("Wrapped Ether", "WETH", 18);
+        AquaVolPricingEngine pricingEngine = new AquaVolPricingEngine();
         AquaVolSwapVMRouter router = new AquaVolSwapVMRouter(
-            address(aqua), address(weth), address(this), "AquaVol SwapVM", "1"
+            address(aqua),
+            address(weth),
+            address(this),
+            address(pricingEngine),
+            "AquaVol SwapVM",
+            "1"
         );
 
         require(address(router.AQUA()) == address(aqua), "wrong Aqua binding");
         require(address(router.WETH()) == address(weth), "wrong WETH binding");
+        require(address(router.PRICING_ENGINE()) == address(pricingEngine), "wrong engine binding");
         require(address(router.asView()) == address(router), "wrong simulator binding");
+        require(address(router).code.length <= 24_576, "router exceeds EIP-170");
+        require(address(pricingEngine).code.length <= 24_576, "engine exceeds EIP-170");
     }
 
     function _requireUnknownOpcode(uint8 opcode) private {

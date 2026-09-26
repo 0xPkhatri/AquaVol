@@ -14,19 +14,20 @@ import { MockTaker } from "@1inch/swap-vm/test/solidity/mocks/MockTaker.sol";
 
 import { BaseSepoliaConfig } from "../../src/deployment/BaseSepoliaConfig.sol";
 import { BaseSepoliaPreflight } from "../../src/deployment/BaseSepoliaPreflight.sol";
+import { UniswapV3DeploymentMath } from "../../src/deployment/UniswapV3DeploymentMath.sol";
 import {
     INonfungiblePositionManagerMinimal,
     ISwapRouter02Minimal,
     IUniswapV3PoolDeployment,
     IWETH9Minimal
 } from "../../src/deployment/interfaces/IUniswapV3Deployment.sol";
-import { FullMath } from "../../src/libraries/FullMath.sol";
 import { VolatilityRegistry } from "../../src/oracles/VolatilityRegistry.sol";
 import { UniswapV3TwapOracle } from "../../src/oracles/uniswap/UniswapV3TwapOracle.sol";
 import { OptionSeries } from "../../src/options/OptionSeries.sol";
 import { AquaVolFairValue } from "../../src/swapvm/AquaVolFairValue.sol";
 import { AquaVolInventorySkew } from "../../src/swapvm/AquaVolInventorySkew.sol";
 import { AquaVolSwapVMRouter } from "../../src/swapvm/AquaVolSwapVMRouter.sol";
+import { AquaVolPricingEngine } from "../../src/swapvm/AquaVolPricingEngine.sol";
 import { AquaVolDemoUSDC } from "../../src/tokens/AquaVolDemoUSDC.sol";
 
 interface DeploymentRehearsalVm {
@@ -153,7 +154,8 @@ contract BaseSepoliaDeploymentRehearsalTest {
         address token1 = address(weth) < address(quote) ? address(quote) : address(weth);
         uint256 amount0ForPrice = token0 == address(weth) ? 1e18 : 3_800e6;
         uint256 amount1ForPrice = token1 == address(quote) ? 3_800e6 : 1e18;
-        uint160 sqrtPriceX96 = _encodeSqrtRatioX96(amount1ForPrice, amount0ForPrice);
+        uint160 sqrtPriceX96 =
+            UniswapV3DeploymentMath.encodeSqrtRatioX96(amount1ForPrice, amount0ForPrice);
 
         INonfungiblePositionManagerMinimal manager =
             INonfungiblePositionManagerMinimal(externalContracts.positionManager);
@@ -217,8 +219,14 @@ contract BaseSepoliaDeploymentRehearsalTest {
 
     function _deployPosition() private {
         aqua = new Aqua();
+        AquaVolPricingEngine pricingEngine = new AquaVolPricingEngine();
         router = new AquaVolSwapVMRouter(
-            address(aqua), address(weth), address(this), "AquaVol SwapVM", "1"
+            address(aqua),
+            address(weth),
+            address(this),
+            address(pricingEngine),
+            "AquaVol SwapVM",
+            "1"
         );
         taker = new MockTaker(aqua, router, address(this));
         registry = new VolatilityRegistry(address(this));
@@ -349,61 +357,6 @@ contract BaseSepoliaDeploymentRehearsalTest {
         tokenA = address(series);
         tokenB = address(quote);
         if (tokenA > tokenB) (tokenA, tokenB) = (tokenB, tokenA);
-    }
-
-    function _encodeSqrtRatioX96(uint256 amount1, uint256 amount0) private pure returns (uint160) {
-        uint256 ratioX192 = FullMath.mulDiv(amount1, uint256(1) << 192, amount0);
-        uint256 sqrtRatioX96 = _sqrt(ratioX192);
-        require(sqrtRatioX96 <= type(uint160).max, "sqrt price overflow");
-        // The preceding explicit bound makes this narrowing conversion safe.
-        // forge-lint: disable-next-line(unsafe-typecast)
-        return uint160(sqrtRatioX96);
-    }
-
-    function _sqrt(uint256 value) private pure returns (uint256 result) {
-        if (value == 0) return 0;
-        // This intentionally calculates two raised to half the value's highest-set-bit index.
-        // forge-lint: disable-next-line(incorrect-shift)
-        result = 1 << ((255 - _clz(value)) / 2);
-        unchecked {
-            for (uint256 i = 0; i < 8; ++i) {
-                result = (result + value / result) >> 1;
-            }
-            uint256 roundedDown = value / result;
-            if (roundedDown < result) result = roundedDown;
-        }
-    }
-
-    function _clz(uint256 value) private pure returns (uint256 count) {
-        if (value >> 128 == 0) {
-            count += 128;
-            value <<= 128;
-        }
-        if (value >> 192 == 0) {
-            count += 64;
-            value <<= 64;
-        }
-        if (value >> 224 == 0) {
-            count += 32;
-            value <<= 32;
-        }
-        if (value >> 240 == 0) {
-            count += 16;
-            value <<= 16;
-        }
-        if (value >> 248 == 0) {
-            count += 8;
-            value <<= 8;
-        }
-        if (value >> 252 == 0) {
-            count += 4;
-            value <<= 4;
-        }
-        if (value >> 254 == 0) {
-            count += 2;
-            value <<= 2;
-        }
-        if (value >> 255 == 0) count += 1;
     }
 
     function _emitSummary(

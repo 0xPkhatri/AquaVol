@@ -278,3 +278,20 @@ strategy next ask of `62.646903` avUSD. Ten WETH of collateral remained against
 10 CALL total supply. All AquaVol addresses, funding, time advancement, and
 transactions in this evidence are local to the fork and are not public
 deployment claims.
+
+## E-019 — Externalize custom opcode computation for EIP-170
+
+- Date: 2026-09-26
+- State: accepted and deployed on Base Sepolia
+
+The initially simulated custom router compiled to 32,620 runtime bytes, above
+the 24,576-byte EIP-170 limit, so it was not broadcast. Lower optimizer runs
+still produced 31,791 bytes and did not solve the deployment constraint.
+
+The final architecture keeps the official SwapVM-derived router and active
+`0xd1`/`0xd2` dispatcher, but binds it immutably to a stateless read-only
+`AquaVolPricingEngine`. The router forwards only the strategy arguments and
+current SwapVM registers; the engine returns updated amount registers and
+cannot settle or custody tokens. This produces a 22,503-byte router and an
+11,201-byte engine. The complete 135-test suite passed before broadcast, and
+onchain reads verified both runtime sizes and the immutable engine binding.

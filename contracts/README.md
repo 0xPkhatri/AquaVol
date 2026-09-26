@@ -157,6 +157,25 @@ Do not add `--broadcast` until the resolved signer, balance, gas estimate, and
 predicted contract address have been reviewed. Approval for stage 1 does not
 authorize pool creation or any later stage.
 
+The public checkpoint proceeds through separate scripts for pool bootstrap,
+protocol-core deployment, TWAP observation, and market-contract deployment:
+
+```bash
+forge script script/BootstrapUniswapV3Pool.s.sol:BootstrapUniswapV3Pool \
+  --rpc-url https://sepolia.base.org -vv
+forge script script/DeployProtocolCore.s.sol:DeployProtocolCore \
+  --rpc-url https://sepolia.base.org -vv
+forge script script/WriteTwapObservation.s.sol:WriteTwapObservation \
+  --rpc-url https://sepolia.base.org -vv
+forge script script/DeployMarketContracts.s.sol:DeployMarketContracts \
+  --rpc-url https://sepolia.base.org -vv
+```
+
+Each command defaults to simulation; `--broadcast` is an explicit final flag.
+The TWAP observation stage deliberately fails until the seeded pool has a full
+30-minute history. Current public evidence is recorded in
+[`docs/BASE_SEPOLIA_DEPLOYMENT.md`](../docs/BASE_SEPOLIA_DEPLOYMENT.md).
+
 ## Volatility trust boundary
 
 `VolatilityRegistry` stores 18-decimal annualized implied volatility keyed by

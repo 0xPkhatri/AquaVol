@@ -17,9 +17,10 @@ contract AquaVolSwapVMRouter is Simulator, SwapVM, AquaVolOpcodes {
         address aqua,
         address weth,
         address owner,
+        address pricingEngine,
         string memory name,
         string memory version
-    ) SwapVM(aqua, weth, owner, name, version) { }
+    ) SwapVM(aqua, weth, owner, name, version) AquaVolOpcodes(pricingEngine) { }
 
     function _dispatch(Context memory ctx, uint256 opcode, bytes calldata args) internal override {
         _runOpcode(ctx, opcode, args);

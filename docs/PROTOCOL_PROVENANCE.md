@@ -64,6 +64,12 @@ Independent contracts such as `OptionSeries`, which neither incorporate nor
 extend SwapVM, remain outside this derivative boundary. This classification is
 an engineering record and not legal advice.
 
+The Base Sepolia router immutably delegates AquaVol opcode calculation to
+`AquaVolPricingEngine`, also located inside the recorded derivative boundary.
+The split was required because the fully inlined router exceeded EIP-170. The
+engine is stateless and read-only; official SwapVM and Aqua remain responsible
+for execution control, settlement, and virtual-balance accounting.
+
 ## Verification record
 
 Verified on 2026-09-26 with Foundry 1.5.1-stable and Solidity 0.8.30:
@@ -113,3 +119,13 @@ Both protocol submodules remained clean at their recorded revisions. Prompt
 guards, upstream delegation, router bindings, and reconciled CALL/USDC token
 settlement through Aqua. It does not verify production option pricing, oracles,
 or a public deployment.
+
+## Base Sepolia derivative deployment verification
+
+Before broadcast, the complete AquaVol suite passed 135 tests with Solidity
+0.8.30. The deployable runtime sizes were 22,503 bytes for
+`AquaVolSwapVMRouter` and 11,201 bytes for `AquaVolPricingEngine`, both below
+EIP-170. Base Sepolia read-only checks subsequently confirmed those exact
+sizes, the router's exact-source Aqua and canonical WETH bindings, and its
+immutable pricing-engine address. Public addresses and transaction hashes are
+recorded in `docs/BASE_SEPOLIA_DEPLOYMENT.md`.

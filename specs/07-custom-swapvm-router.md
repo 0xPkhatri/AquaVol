@@ -12,6 +12,22 @@
 > `0xd1 → 0xd2`. This document remains as evidence of the staged development
 > process; it no longer describes the active dispatcher.
 
+### Deployment successor architecture
+
+The active `0xd1 → 0xd2` implementation preserves the dispatcher and official
+SwapVM settlement boundary proved by this historical checkpoint. For Base
+Sepolia, computation-heavy pricing executes in an immutable, stateless
+`AquaVolPricingEngine` because inlining Black-Scholes and inventory mathematics
+produced a 32,620-byte router, above the 24,576-byte EIP-170 limit.
+
+The deployed router copies only the current query and amount registers into a
+read-only engine call, then copies the returned amount registers back into the
+SwapVM context. The engine cannot access Aqua settlement authority, transfer
+tokens, approve spenders, or persist pricing state. Aqua and the official
+SwapVM flow remain solely responsible for token movement and virtual-balance
+accounting. The engine address is immutable and part of the router's public
+deployment evidence.
+
 ## Objective
 
 Introduce the smallest reviewable SwapVM extension that proves AquaVol can run

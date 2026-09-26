@@ -20,6 +20,7 @@ import { OptionSeries } from "../../src/options/OptionSeries.sol";
 import { BlackScholes } from "../../src/pricing/BlackScholes.sol";
 import { AquaVolFairValue } from "../../src/swapvm/AquaVolFairValue.sol";
 import { AquaVolSwapVMRouter } from "../../src/swapvm/AquaVolSwapVMRouter.sol";
+import { AquaVolPricingEngine } from "../../src/swapvm/AquaVolPricingEngine.sol";
 import { MockUniswapV3Factory, MockUniswapV3Pool } from "../oracles/mocks/MockUniswapV3.sol";
 
 interface FairValueSettlementVm {
@@ -68,8 +69,14 @@ contract AquaVolFairValueSettlementTest {
         aqua = new Aqua();
         weth = new MockERC20("Wrapped Ether", "WETH", 18);
         usdc = new MockERC20("USD Coin", "USDC", 6);
+        AquaVolPricingEngine pricingEngine = new AquaVolPricingEngine();
         router = new AquaVolSwapVMRouter(
-            address(aqua), address(weth), address(this), "AquaVol SwapVM", "1"
+            address(aqua),
+            address(weth),
+            address(this),
+            address(pricingEngine),
+            "AquaVol SwapVM",
+            "1"
         );
         taker = new MockTaker(aqua, router, address(this));
 
