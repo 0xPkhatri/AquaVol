@@ -4,9 +4,9 @@ This Foundry project contains the isolated `OptionSeries` lifecycle, pinned
 unmodified Aqua and SwapVM submodules, an AquaVol router extension, a guarded
 Uniswap V3 TWAP adapter, and a bounded implied-volatility registry. Local tests
 prove the CALL/USDC settlement path, custom opcode dispatch foundation, oracle
-validation boundaries, and fixed-point European-call reference pricing. The
-fair-value opcode, public deployment, and production token integration are not
-yet present.
+validation boundaries, fixed-point European-call pricing, and fair-value Aqua
+settlement in both directions. Inventory skew, public deployment, and
+production token integration are not yet present.
 
 ## Custom SwapVM foundation
 
@@ -14,7 +14,7 @@ The AquaVol extension leaves both protocol submodules unchanged and adds:
 
 - a raw two-byte instruction-header builder;
 - canonical opcode allocation in the upstream unallocated bank;
-- a dispatcher that handles `0xd0` and delegates other opcodes upstream;
+- a dispatcher that handles `0xd0` and `0xd1` and delegates other opcodes upstream;
 - a modified router with the official Aqua settlement interface;
 - a temporary exact-output constant-price instruction for integration testing.
 
@@ -118,8 +118,20 @@ strike, time, and volatility domains. It uses the pinned, unmodified PRBMath
 
 Solidity tests read the committed Python JSON vectors directly. They cover CDF
 accuracy and monotonicity, canonical call values, analytical bounds, domain
-edges, intrinsic-value behavior, and a measured approximation clamp. This math
-is not yet wired into SwapVM opcode `0xd1`.
+edges, intrinsic-value behavior, and a measured approximation clamp.
+
+SwapVM opcode `0xd1` binds this math to a strategy-committed option series,
+guarded TWAP oracle, volatility registry, and maximum volatility age. Buys are
+exact-output and round USDC input upward; sell-backs are exact-input and round
+USDC output downward. The instruction changes only SwapVM amount registers,
+while Aqua performs token settlement.
+
+Run the focused opcode and settlement evidence:
+
+```bash
+forge test --offline --match-path test/swapvm/AquaVolFairValue.t.sol -vv
+forge test --offline --match-path test/integration/AquaVolFairValueSettlement.t.sol -vv
+```
 
 The suite includes unit tests, a 512-run fractional exercise fuzz test, and
 stateful invariants covering lifecycle transitions and collateral solvency.

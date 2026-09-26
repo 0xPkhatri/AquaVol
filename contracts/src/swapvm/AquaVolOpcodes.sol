@@ -10,6 +10,7 @@ import { AquaOpcodes } from "@1inch/swap-vm/contracts/opcodes/AquaOpcodes.sol";
 
 import { AquaVolOpcode } from "./AquaVolOpcode.sol";
 import { AquaVolConstantPrice } from "./AquaVolConstantPrice.sol";
+import { AquaVolFairValue } from "./AquaVolFairValue.sol";
 
 /// @notice Dispatches AquaVol instructions and delegates all other opcodes upstream.
 contract AquaVolOpcodes is AquaOpcodes {
@@ -20,6 +21,8 @@ contract AquaVolOpcodes is AquaOpcodes {
     {
         if (opcode == AquaVolOpcode.CONSTANT_PRICE) {
             AquaVolConstantPrice.exec(ctx, args);
+        } else if (opcode == AquaVolOpcode.OPTION_FAIR_VALUE) {
+            AquaVolFairValue.exec(ctx, args);
         } else {
             super._runOpcode(ctx, opcode, args);
         }

@@ -10,12 +10,11 @@ and a pinned local Aqua/SwapVM integration harness. The unmodified protocol
 baseline settles a tested CALL/USDC trade and reconciles real token transfers
 with Aqua virtual balances.
 
-The **custom SwapVM router foundation, local Aqua settlement path, guarded
-Uniswap V3 TWAP spot oracle, bounded volatility registry, and fixed-point
-Black-Scholes libraries are implemented and tested**. Base Sepolia
-canonical-pool verification is available as an explicit read-only fork check.
-The fair-value SwapVM opcode, browser, backend, and public deployment do not
-exist yet.
+The **custom SwapVM router, local Aqua settlement path, guarded Uniswap V3 TWAP
+spot oracle, bounded volatility registry, fixed-point Black-Scholes libraries,
+and fair-value opcode are implemented and tested**. Base Sepolia canonical-pool
+verification is available as an explicit read-only fork check. The inventory
+skew opcode, browser, backend, and public deployment do not exist yet.
 
 ## Intended stack
 
