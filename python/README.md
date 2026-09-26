@@ -16,10 +16,17 @@ Regenerate the canonical vector document:
 PYTHONPATH=python python3 -m aquavol_math.generate_vectors
 ```
 
+Print the exact integer inventory-settlement vectors:
+
+```bash
+PYTHONPATH=python python3 -m aquavol_math.generate_inventory_vectors
+```
+
 The generator prints JSON to standard output. Compare it with
-`test/vectors/black_scholes-v1.json`; do not replace the committed vector file
-without reviewing the numerical change and updating its schema or model
-version when appropriate.
+`test/vectors/black_scholes-v1.json` or
+`test/vectors/inventory_settlement-v1.json`, as appropriate; do not replace a
+committed vector file without reviewing the numerical change and updating its
+schema or model version when appropriate.
 
 The Solidity pricing tests read this committed JSON file directly rather than
 maintaining a separate set of expected call values. The Python suite also

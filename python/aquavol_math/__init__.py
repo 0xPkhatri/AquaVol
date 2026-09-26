@@ -7,6 +7,7 @@ from .black_scholes import (
     inventory_quote,
     normal_cdf,
 )
+from .inventory_settlement import IntegerInventoryQuote, inventory_quote_native
 
 __all__ = [
     "BlackScholesResult",
@@ -14,5 +15,6 @@ __all__ = [
     "call_price",
     "inventory_quote",
     "normal_cdf",
+    "IntegerInventoryQuote",
+    "inventory_quote_native",
 ]
-
