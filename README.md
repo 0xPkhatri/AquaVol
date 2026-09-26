@@ -4,9 +4,9 @@ AquaVol is a spec-driven project being developed during ETHGlobal Tokyo 2026.
 
 ## Status
 
-This repository currently contains only the project baseline, development
-prompt record, and AI-use disclosure. No application or smart-contract code
-has been implemented yet.
+This repository currently contains the project baseline, prompt record, and
+draft product specifications. No application or smart-contract code has been
+implemented yet.
 
 The project is in **position discovery**. Implementation begins only after the
 position lifecycle, mathematical inputs, settlement path, and demo evidence
@@ -20,6 +20,48 @@ are approved in the foundation specification.
 - Network: Base Sepolia
 - Reference mathematics: Python Black-Scholes model and deterministic test
   vectors
+
+## How it works
+
+```mermaid
+flowchart TD
+    A[Alice / Writer and Maker]
+    B[Bob / Trader]
+    O[OptionSeries]
+    AQ[Aqua Virtual Balances]
+    VM[Modified SwapVM]
+    S[Updated Aqua Strategy State]
+
+    A -->|Lock 10 WETH| O
+    O -->|Mint 10 CALL| A
+
+    A -.->|Approve CALL and USDC| AQ
+    A -.->|Ship virtual CALL and USDC balances| AQ
+
+    B -->|Request CALL quote| VM
+    VM -->|Read safeBalances| AQ
+    AQ -->|Current CALL and USDC balances| VM
+    VM -->|Fair value plus inventory skew and spread| B
+
+    A -->|1 CALL settled through Aqua pull| B
+    B -->|Quoted USDC settled through Aqua push| A
+
+    AQ -->|CALL decreases and USDC increases| S
+    S -->|Changes the next quote| VM
+
+    B -->|Optional sell-back through Aqua push| A
+    A -->|Bid USDC through Aqua pull| B
+
+    B -->|During exercise window: CALL and strike USDC| O
+    O -->|Burn the exercised CALL| O
+    O -->|Send WETH| B
+```
+
+`OptionSeries` holds collateral and enforces exercise. Aqua tracks the maker's
+virtual liquidity and settles token transfers. SwapVM reads the current Aqua
+balances and calculates the executable price. The solid maker/trader arrows
+show economic token movement authorized and accounted for through Aqua; Aqua
+does not custody the strategy inventory when it is shipped.
 
 ## Development approach
 
