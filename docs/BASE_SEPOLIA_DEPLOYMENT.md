@@ -137,6 +137,16 @@ The read-only verifier also confirmed 0.09 virtual CALL, 50.779818 virtual
 avUSD, the deployed runtime sizes and immutable bindings, trader balances, and
 unchanged 0.10 WETH collateral against 0.10 CALL supply.
 
+## Source publication status
+
+`AquaVolDemoUSDC` received an exact Sourcify match. The pricing engine, router,
+and OptionSeries Sourcify submissions encountered remote import-remapping
+errors; they did not report bytecode mismatches. Their complete source,
+compiler configuration, constructor arguments, tests, runtime sizes, immutable
+bindings, and deployment transactions are public in this repository. Explorer
+source verification for those contracts remains a non-blocking follow-up and
+must not be represented as complete.
+
 ## Remaining evidence
 
-- record source-verification status and final submission links.
+- add the final frontend and ETHGlobal submission links when available.

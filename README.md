@@ -43,8 +43,8 @@ flowchart TD
     VM[Modified SwapVM]
     S[Updated Aqua Strategy State]
 
-    A -->|Lock 10 WETH| O
-    O -->|Mint 10 CALL| A
+    A -->|Lock 0.10 WETH| O
+    O -->|Mint 0.10 CALL| A
 
     A -.->|Approve CALL and USDC| AQ
     A -.->|Ship virtual CALL and USDC balances| AQ
@@ -54,7 +54,7 @@ flowchart TD
     AQ -->|Current CALL and USDC balances| VM
     VM -->|Fair value plus inventory skew and spread| B
 
-    A -->|1 CALL settled through Aqua pull| B
+    A -->|0.01 CALL settled through Aqua pull| B
     B -->|Quoted USDC settled through Aqua push| A
 
     AQ -->|CALL decreases and USDC increases| S
@@ -73,6 +73,31 @@ virtual liquidity and settles token transfers. SwapVM reads the current Aqua
 balances and calculates the executable price. The solid maker/trader arrows
 show economic token movement authorized and accounted for through Aqua; Aqua
 does not custody the strategy inventory when it is shipped.
+
+## Live Base Sepolia deployment
+
+The complete public settlement proof is live on Base Sepolia (`84532`). All
+assets and liquidity are hackathon-only test infrastructure.
+
+| Component | Address |
+| --- | --- |
+| AquaVol Demo USD (`avUSD`) | [`0xf475...A9dc`](https://sepolia.basescan.org/address/0xf47584005b5c0F90f292C811016E70e37E3BA9dc) |
+| WETH/avUSD Uniswap V3 pool | [`0x0d95...6D0`](https://sepolia.basescan.org/address/0x0d9516aA182Aa72284802372afaa943E9E77A6D0) |
+| Exact-source Aqua | [`0x170B...4F9`](https://sepolia.basescan.org/address/0x170B0d7C534785eAD9Ecbc278B3D87781855D4F9) |
+| AquaVol pricing engine | [`0x68b7...4884`](https://sepolia.basescan.org/address/0x68b7036ae9e1266675f226F36d2c764927C84884) |
+| Modified SwapVM router | [`0x8b73...ceb4`](https://sepolia.basescan.org/address/0x8b734D9222D51Aa75C038AB81145FC86D5b4ceb4) |
+| Volatility registry | [`0xF253...C37e`](https://sepolia.basescan.org/address/0xF2537463ddeA54EEa205bD183a9e303bDe02C37e) |
+| Guarded TWAP oracle | [`0x2D2b...8903`](https://sepolia.basescan.org/address/0x2D2bfade5AD73C946fdcA2a882A21E542A568903) |
+| WETH 4,000 CALL series | [`0x7F3c...A117`](https://sepolia.basescan.org/address/0x7F3c414aEf81CAf377fF34A419EC388105fBA117) |
+
+The distinct trader's [`0.01 CALL` purchase](https://sepolia.basescan.org/tx/0xb49b7574aa15a92cb96fb6b804279ca321488dcd1b43a8c6bb780a9dd1cf7379)
+paid 0.779818 avUSD. The unchanged strategy then quoted 0.815649 avUSD for the
+next 0.01 CALL because live Aqua inventory fell from 0.10 to 0.09 CALL.
+OptionSeries retained the full 0.10 WETH collateral throughout settlement.
+
+See the [complete deployment evidence](docs/BASE_SEPOLIA_DEPLOYMENT.md) for
+constructor settings, transaction sequence, balance reconciliation, strategy
+hash, trust assumptions, and reproducible verification commands.
 
 ## Mathematical reference
 
