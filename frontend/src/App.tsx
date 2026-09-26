@@ -1,4 +1,5 @@
 import { StrategyBuilder } from "./components/StrategyBuilder";
+import { ProtocolProof } from "./components/ProtocolProof";
 import { deployment } from "./data/deployment";
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
             Aqua<strong>Vol</strong>
           </span>
         </a>
-        <nav><a href="#strategy">Strategy builder</a><span className="network"><i />{deployment.network}</span></nav>
+        <nav><a href="#strategy">Strategy builder</a><a href="#proof">Onchain proof</a><span className="network"><i />{deployment.network}</span></nav>
       </header>
       <section className="hero">
         <p className="eyebrow">PROGRAMMABLE ONCHAIN OPTIONS</p>
@@ -21,6 +22,7 @@ function App() {
           <em>made programmable.</em>
         </h1>
         <p className="hero-copy">Explore multi-leg WETH strategies while keeping the deployed Aqua position visibly separate from local simulations.</p>
+        <div className="hero-actions"><a href="#strategy">Build a strategy</a><a href="#proof">Inspect the proof ↓</a></div>
         <div className="foundation-grid market-grid">
           <article>
             <span>WETH TWAP</span>
@@ -42,7 +44,8 @@ function App() {
         </div>
       </section>
       <StrategyBuilder />
-      <footer><span>AquaVol · Base Sepolia experimental software</span><span>Live series and simulations are explicitly labelled</span></footer>
+      <ProtocolProof />
+      <footer><a className="brand" href="#"><span className="brand-mark">A</span><span>Aqua<strong>Vol</strong></span></a><span>Base Sepolia test assets only · Not production software</span><span>Powered by Aqua + SwapVM</span></footer>
     </div>
   );
 }
