@@ -13,14 +13,18 @@ As of 2026-09-26, AI assistance has been used to:
 - review the official Aqua, SwapVM, and Aqua SDK documentation;
 - identify compliance, deployment, testing, and mathematical-specification
   concerns;
-- prepare this repository baseline and prompt record.
+- prepare this repository baseline and prompt record;
 - draft the product, lifecycle, pricing, integration, security, and demo
   specifications under human-approved constraints;
 - implement and test the independent Python Black-Scholes and inventory-pricing
   reference;
-- generate the version-one cross-language mathematical vectors.
+- generate the version-one cross-language mathematical vectors;
+- implement and test the option lifecycle, Aqua/SwapVM integration, guarded
+  Uniswap TWAP adapter, volatility registry, fixed-point pricing, and fair-value
+  opcode under human-reviewed phase prompts;
+- draft the inventory-aware pricing architecture and its implementation gates.
 
-No browser, backend, or smart-contract implementation has been generated at
+No browser, backend, or public deployment implementation has been generated at
 this stage.
 
 ## Attribution policy

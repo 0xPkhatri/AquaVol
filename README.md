@@ -128,6 +128,7 @@ Current working documents:
 - [Custom SwapVM router](specs/07-custom-swapvm-router.md)
 - [Uniswap V3 TWAP oracle](specs/08-uniswap-v3-twap-oracle.md)
 - [Volatility registry and fair value](specs/09-volatility-and-fair-value.md)
+- [Inventory-aware pricing](specs/10-inventory-aware-pricing.md)
 - [Engineering log](docs/ENGINEERING_LOG.md)
 - [Dependency register](docs/DEPENDENCY_REGISTER.md)
 - [Protocol provenance](docs/PROTOCOL_PROVENANCE.md)

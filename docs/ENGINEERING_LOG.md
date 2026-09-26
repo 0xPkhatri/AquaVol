@@ -205,3 +205,25 @@ normal-CDF approximation, and the existing Python vectors as the independent
 reference. Opcode `0xd1` reads series terms, guarded TWAP evidence, and the
 volatility record through static calls to addresses bound in strategy bytes.
 Inventory exposure and spread remain isolated for a later prompt.
+
+## E-015 — Compose fair value with live Aqua inventory
+
+- Date: 2026-09-26
+- State: proposed for Prompt 0009 review
+
+The inventory instruction will consume the total USDC-native fair-value amount
+already written by opcode `0xd1`, then apply average exposure, inventory gamma,
+and half-spread using the CALL balance already loaded from Aqua. It will not
+recompute Black-Scholes or accept a taker-provided price.
+
+Opcode `0xd2` binds the CALL and USDC pair, guarded oracle, initial CALL
+inventory, gamma, and spread in 192 bytes of immutable strategy arguments. The
+oracle is read again only to cap the final adjusted premium at spot. Buy
+adjustments round upward and sell-back adjustments round downward at both the
+inventory and spread stages.
+
+The canonical builder emits `0xd1` followed by `0xd2`. Missing-register guards
+make reversed or missing instructions fail closed, while Aqua's complete-order
+strategy hash isolates any altered program from canonical liquidity. The
+temporary `0xd0` path remains only until inventory-aware settlement and dynamic
+repricing pass their own review checkpoint.
