@@ -2,10 +2,11 @@
 
 ## Status
 
-- Version: 0.5
-- State: custom-router local settlement implemented; production pricing pending
-- Implementation authorized: completed Prompt 0006 path and Prompt 0007
-  spot-oracle checkpoints only
+- Version: 0.6
+- State: custom-router settlement and spot oracle implemented; fair-value
+  architecture specified
+- Implementation authorized: Prompt 0008 checkpoints, subject to its explicit
+  human-review gates; inventory pricing remains unauthorized
 
 ## Integration objective
 

@@ -2,10 +2,10 @@
 
 ## Status
 
-- Version: 0.4
+- Version: 0.5
 - State: approved MVP baseline
 - Implementation authorized: reference math, OptionSeries, protocol routing,
-  and Prompt 0007 Uniswap spot-oracle checkpoints
+  Prompt 0007 spot-oracle checkpoints, and Prompt 0008 fair-value checkpoints
 - Network target: Base Sepolia
 
 The words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** describe normative
@@ -188,6 +188,7 @@ The one-writer restriction, canonical parameters, administrator-controlled
 volatility, and buyback support are approved for the MVP. Prompt 0004
 authorized `OptionSeries`; Prompt 0005 authorized the pinned unmodified
 Aqua/SwapVM baseline; Prompt 0006 completed the custom-router foundation;
-Prompt 0007 authorizes only the Uniswap spot-oracle checkpoints. Production
-pricing, volatility-registry code, deployment, and browser implementation still
-require later phase prompts.
+Prompt 0007 completed the Uniswap spot-oracle checkpoints. Prompt 0008
+authorizes the bounded volatility registry and unskewed fair-value path through
+separate review gates. Inventory pricing, deployment, and browser
+implementation still require later phase prompts.

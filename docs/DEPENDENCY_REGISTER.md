@@ -12,6 +12,7 @@ still requires version and license review before integration.
 | Uniswap V3 core | Minimal pool interfaces and TickMath adaptation for the TWAP adapter | `Uniswap/v3-core@d0831dc6b8a318df3872b6d68f6de135c9f3ec29` | Narrow Solidity 0.8 adaptation isolated under `contracts/src/oracles/uniswap`; GPL-2.0-or-later |
 | Uniswap V3 periphery | OracleLibrary consult and tick-quote adaptation | `Uniswap/v3-periphery@0682387198a24c7cd63566a2c58398533860a5d1` | Narrow Solidity 0.8 adaptation isolated under `contracts/src/oracles/uniswap`; GPL-2.0-or-later |
 | Uniswap SDK address registry | Base Sepolia deployment-address provenance | `Uniswap/sdks@60d7e07e9dd1c62a8b662effd1818c24c5e02ebc` | Reference only; no package installed |
+| PRBMath | Signed and unsigned 18-decimal logarithm, exponential, square root, multiplication, and division for bounded option pricing | `PaulRBerg/prb-math@29a3c06c709496a8f9775dea115935befc5158a7` (`v4.2.0`) | Approved candidate for Prompt 0008 Checkpoint 3; installation deferred until Checkpoint 2 review; MIT |
 | Foundry 1.5.1-stable (`b0a9dd9`) | Local Solidity build and test toolchain; no vendored runtime code | https://github.com/foundry-rs/foundry | In use for Prompt 0004; MIT OR Apache-2.0 |
 | React | Browser UI | https://github.com/facebook/react | Planned |
 | Vite | Frontend development and build | https://github.com/vitejs/vite | Planned |

@@ -188,3 +188,20 @@ other and from the canonical AquaVol scenario. The public deterministic demo
 will therefore use canonical Base Sepolia WETH with clearly labeled DemoUSDC in
 a project-seeded pool created by the official V3 factory. The existing 0.30%
 canonical pool remains a comparison feed, not the authoritative demo input.
+
+## E-014 — Separate volatility administration from fair-value math
+
+- Date: 2026-09-26
+- State: proposed for Prompt 0008 review
+
+Implied volatility will remain a separately timestamped administrator input,
+keyed by immutable `OptionSeries` address and bounded to 0.01%–500% annualized.
+The updater cannot custody collateral or maker liquidity. Missing, stale,
+future-dated, or out-of-range data stops trading rather than falling back.
+
+Solidity fair value will use PRBMath `v4.2.0` at commit
+`29a3c06c709496a8f9775dea115935befc5158a7`, a bounded Abramowitz and Stegun
+normal-CDF approximation, and the existing Python vectors as the independent
+reference. Opcode `0xd1` reads series terms, guarded TWAP evidence, and the
+volatility record through static calls to addresses bound in strategy bytes.
+Inventory exposure and spread remain isolated for a later prompt.

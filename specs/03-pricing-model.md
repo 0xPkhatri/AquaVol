@@ -2,10 +2,11 @@
 
 ## Status
 
-- Version: 0.3
-- State: reference math implemented; Uniswap spot-oracle architecture approved
-- Implementation authorized: Prompt 0007 checkpoints only; Solidity
-  Black-Scholes remains unauthorized
+- Version: 0.4
+- State: reference math and Uniswap spot oracle implemented; fair-value
+  architecture specified
+- Implementation authorized: Prompt 0008 checkpoints, subject to its explicit
+  human-review gates
 
 ## Scope
 
@@ -277,13 +278,19 @@ Vectors MUST cover:
 - buy and sell-back rounding;
 - a multi-unit trade compared with split execution.
 
-## Unresolved before approval
+## Resolved by Prompt 0008 architecture
 
-- The exact fixed-point library and pinned version.
-- Final CDF coefficients and empirically measured error.
-- Final spot, volatility, gamma, and spread bounds.
-- Whether a premium reaching the spot upper bound reverts or disables only the
-  affected direction.
+- PRBMath `v4.2.0` at commit
+  `29a3c06c709496a8f9775dea115935befc5158a7` is the selected fixed-point
+  dependency.
+- The normal CDF uses the bounded Abramowitz and Stegun 26.2.17 approximation
+  and retains the `2e-6` measured-error gate.
+- Spot, strike, time, and volatility bounds are fixed by
+  `specs/09-volatility-and-fair-value.md`; gamma and spread remain deferred to
+  the inventory prompt.
+- A mathematical call value may equal spot, but runtime pricing rejects zero or
+  out-of-domain premiums and later inventory pricing must reject a final quote
+  above its safety bound.
 
 These items remain deliberately unresolved for Solidity. They do not block the
 standard-library Python reference, which uses binary floating-point calculations

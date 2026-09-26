@@ -2,10 +2,10 @@
 
 ## Status
 
-- Version: 0.4
+- Version: 0.5
 - State: approved demo baseline
-- Implementation authorized: implemented local foundations and Prompt 0007
-  Uniswap spot-oracle checkpoints only
+- Implementation authorized: implemented local foundations, Prompt 0007 spot
+  oracle, and Prompt 0008 fair-value checkpoints only
 
 ## Demo objective
 
