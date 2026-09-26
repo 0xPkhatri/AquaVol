@@ -3,15 +3,19 @@
 - Network: Base Sepolia (`84532`)
 - Explorer: `https://sepolia.basescan.org`
 - Operator: `0xA4A103c574a9bF22Bc49a7Ce3f089508300320d5`
-- Recorded source HEAD: `05452e89e8cc057332555cb045357e7304f50b45`
-- Deployment state: **partial — infrastructure, protocol core, oracle, series,
-  and Aqua position are live; the distinct-trader transaction and final source
-  verification remain pending**
+- Deployment checkpoint commit: `52d709d`
+- Deployment state: **public market, Aqua position, and distinct-trader trade
+  are live; source verification and final submission checks remain pending**
 
 The operator is a disposable testnet-only account acting as deployer,
 volatility updater, option writer, and Aqua maker. This role consolidation is a
 hackathon operating choice, not a production security model. The public trade
 must use a distinct trader account.
+
+The distinct disposable trader is
+`0xFC78e45702Ae93C1d062001184672c5679532251`. It was funded with exactly
+5 avUSD and 0.003 Base Sepolia ETH for the bounded demonstration. Its key is
+kept only in ignored local configuration and must never be used on mainnet.
 
 ## Live contracts
 
@@ -26,10 +30,9 @@ must use a distinct trader account.
 | Guarded Uniswap V3 TWAP oracle | `0x2D2bfade5AD73C946fdcA2a882A21E542A568903` | `0xd617f52a7f7b14107bcb58a7d1bd5e8cf83fa0e981579b981e58f5d314453356` | pending receipt transcription |
 | WETH 4,000 call OptionSeries | `0x7F3c414aEf81CAf377fF34A419EC388105fBA117` | `0x6ab7f1b685d7067b8a29d40f866cd64ab4624794139fdb3370eb95e1e1658e71` | pending receipt transcription |
 
-The core deployment used uncommitted checkpoint-4 source changes. The final
-source commit must therefore be recorded separately after human review; this
-record does not claim that the recorded HEAD alone reproduces the deployed
-router.
+The core deployment initially used reviewed but uncommitted checkpoint-4
+changes. Those exact router, engine, deployment-script, test, and evidence
+changes were subsequently captured by human-created commit `52d709d`.
 
 ## Uniswap market
 
@@ -93,8 +96,47 @@ The most recent observation refresh used approval transaction
 and swap transaction
 `0x43c61710dbeca565e1d4cf830cca0b088f3c11ced55de411eb69b6cd79a9f604`.
 
+## Public trade evidence
+
+The trader bought exactly 0.01 CALL through the modified SwapVM router and
+official Aqua settlement path. The maximum accepted input encoded in taker
+traits was 1 avUSD; actual settlement paid 0.779818 avUSD.
+
+| Evidence | Before | After | Delta |
+| --- | ---: | ---: | ---: |
+| Trader avUSD | 5.000000 | 4.220182 | -0.779818 |
+| Trader CALL | 0.00 | 0.01 | +0.01 |
+| Aqua virtual CALL | 0.10 | 0.09 | -0.01 |
+| Aqua virtual avUSD | 50.000000 | 50.779818 | +0.779818 |
+| OptionSeries WETH collateral | 0.10 | 0.10 | 0 |
+| OptionSeries CALL supply | 0.10 | 0.10 | 0 |
+
+Trader funding transactions:
+
+- 5 avUSD mint: `0x4f4bf8a4110b81eb0eb4fc7eb2f207b430bee5276b8c172883f134ddf6222f9c`
+- 0.003 ETH gas funding: `0xcf0e26b906ac8a2f399c8929c1302865f6872e52cf7e7e38d730117dbfd31e25`
+
+Public-trade transaction sequence:
+
+- observation approval: `0xe429654cebb01a37637bb16f21d6579cfef97a8b83994db49ceb4ff0e65ed05e`
+- observation-refresh swap: `0x196d158e89c264f5ac5700fc1bbc1a99223e460951a8afbf4b85abe9ef8147b3`
+- trader maximum-input approval: `0x651afa9a640d2101e3448157569c9eacbff047a47f5bc7532a12ffcee77e83a4`
+- AquaVol trade: `0xb49b7574aa15a92cb96fb6b804279ca321488dcd1b43a8c6bb780a9dd1cf7379`
+
+After a final observation refresh, the read-only deployment verifier returned
+a TWAP of 3,842.159899 avUSD/WETH and a next 0.01 CALL ask of 0.815649 avUSD.
+This is higher than the settled 0.779818 avUSD while the strategy hash remains
+unchanged, proving inventory-driven repricing against public state.
+
+Final observation refresh transactions:
+
+- approval: `0xda761945eeb8450f58bae0de5f42eb07bb216b721d5fc6dba6359662594e9398`
+- observation swap: `0x834330928e8dd4ceeb281397ad51880a06b19592bd8e49f1547a13e56b7cba0c`
+
+The read-only verifier also confirmed 0.09 virtual CALL, 50.779818 virtual
+avUSD, the deployed runtime sizes and immutable bindings, trader balances, and
+unchanged 0.10 WETH collateral against 0.10 CALL supply.
+
 ## Remaining evidence
 
-- settle a bounded trade from a distinct trader wallet;
-- record balance reconciliation, strategy hash, next quote, source
-  verification status, and all remaining transaction hashes.
+- record source-verification status and final submission links.

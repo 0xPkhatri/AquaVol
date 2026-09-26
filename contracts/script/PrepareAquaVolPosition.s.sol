@@ -6,18 +6,14 @@ pragma solidity 0.8.30;
 /// @custom:modification AquaVol Base Sepolia position preparation added 2026-09-26.
 
 import { Aqua } from "@1inch/aqua/src/Aqua.sol";
-import { Salt } from "@1inch/swap-vm/contracts/instructions/Controls.sol";
 import { ISwapVM } from "@1inch/swap-vm/contracts/interfaces/ISwapVM.sol";
-import { MakerTraitsLib } from "@1inch/swap-vm/contracts/libs/MakerTraits.sol";
-import { TakerTraitsLib } from "@1inch/swap-vm/contracts/libs/TakerTraits.sol";
 
+import { AquaVolBaseSepoliaStrategy } from "../src/deployment/AquaVolBaseSepoliaStrategy.sol";
 import { BaseSepoliaConfig } from "../src/deployment/BaseSepoliaConfig.sol";
 import { IWETH9Minimal } from "../src/deployment/interfaces/IUniswapV3Deployment.sol";
 import { VolatilityRegistry } from "../src/oracles/VolatilityRegistry.sol";
 import { UniswapV3TwapOracle } from "../src/oracles/uniswap/UniswapV3TwapOracle.sol";
 import { OptionSeries } from "../src/options/OptionSeries.sol";
-import { AquaVolFairValue } from "../src/swapvm/AquaVolFairValue.sol";
-import { AquaVolInventorySkew } from "../src/swapvm/AquaVolInventorySkew.sol";
 import { AquaVolSwapVMRouter } from "../src/swapvm/AquaVolSwapVMRouter.sol";
 import { AquaVolDemoUSDC } from "../src/tokens/AquaVolDemoUSDC.sol";
 import { BaseSepoliaBroadcast } from "./BaseSepoliaBroadcast.sol";
@@ -36,9 +32,6 @@ contract PrepareAquaVolPosition is BaseSepoliaBroadcast {
     uint256 private constant INITIAL_QUOTE = 50e6;
     uint256 private constant DEMO_QUOTE_CALL = 0.01e18;
     uint256 private constant VOLATILITY_WAD = 0.64e18;
-    uint256 private constant MAXIMUM_VOLATILITY_AGE = 1 hours;
-    uint256 private constant GAMMA_WAD = 0.2e18;
-    uint256 private constant HALF_SPREAD_WAD = 0.01e18;
 
     error UnexpectedDeployment();
     error PositionAlreadyPrepared();
@@ -91,8 +84,9 @@ contract PrepareAquaVolPosition is BaseSepoliaBroadcast {
         }
 
         oracle.read();
-        ISwapVM.Order memory order = _buildOrder(operator, seriesAddress, oracleAddress);
-        (address tokenA, address tokenB) = _sortedTokens(seriesAddress);
+        ISwapVM.Order memory order =
+            AquaVolBaseSepoliaStrategy.buildOrder(operator, seriesAddress, oracleAddress);
+        (address tokenA, address tokenB) = AquaVolBaseSepoliaStrategy.sortedTokens(seriesAddress);
         address[] memory tokens = new address[](2);
         uint256[] memory amounts = new uint256[](2);
         tokens[0] = tokenA;
@@ -119,91 +113,14 @@ contract PrepareAquaVolPosition is BaseSepoliaBroadcast {
 
         (initialDemoAsk,,) = router.asView()
             .quote(
-                order, DEMO_QUOTE_CALL, _buyTakerData(operator, tokenA, block.timestamp + 5 minutes)
+                order,
+                DEMO_QUOTE_CALL,
+                AquaVolBaseSepoliaStrategy.buildExactOutputBuy(
+                    operator, seriesAddress, 1e6, block.timestamp + 5 minutes
+                )
             );
         emit AquaVolPositionPrepared(
             seriesAddress, oracleAddress, strategyHash, INITIAL_CALL, INITIAL_QUOTE, initialDemoAsk
         );
-    }
-
-    function _buildOrder(address operator, address series, address oracle)
-        private
-        pure
-        returns (ISwapVM.Order memory)
-    {
-        bytes memory program = bytes.concat(
-            AquaVolFairValue.build(
-                series, DEMO_USDC, oracle, VOLATILITY_REGISTRY, MAXIMUM_VOLATILITY_AGE
-            ),
-            AquaVolInventorySkew.build(
-                series, DEMO_USDC, oracle, INITIAL_CALL, GAMMA_WAD, HALF_SPREAD_WAD
-            ),
-            Salt.build(uint64(4))
-        );
-        (address tokenA, address tokenB) = _sortedTokens(series);
-        return MakerTraitsLib.build(
-            MakerTraitsLib.Args({
-                maker: operator,
-                receiver: address(0),
-                tokenA: tokenA,
-                tokenB: tokenB,
-                shouldUnwrapWeth: false,
-                useAquaInsteadOfSignature: true,
-                allowZeroAmountIn: false,
-                usePermit2: false,
-                hasPreTransferInHook: false,
-                hasPostTransferInHook: false,
-                hasPreTransferOutHook: false,
-                hasPostTransferOutHook: false,
-                preTransferInTarget: address(0),
-                preTransferInData: "",
-                postTransferInTarget: address(0),
-                postTransferInData: "",
-                preTransferOutTarget: address(0),
-                preTransferOutData: "",
-                postTransferOutTarget: address(0),
-                postTransferOutData: "",
-                program: program
-            })
-        );
-    }
-
-    function _buyTakerData(address taker, address tokenA, uint256 deadline)
-        private
-        pure
-        returns (bytes memory)
-    {
-        return TakerTraitsLib.build(
-            TakerTraitsLib.Args({
-                taker: taker,
-                isExactIn: false,
-                shouldUnwrapWeth: false,
-                isStrictThresholdAmount: false,
-                isFirstTransferFromTaker: false,
-                useTransferFromAndAquaPush: false,
-                isAToB: DEMO_USDC == tokenA,
-                allowPartialFill: false,
-                usePermit2: false,
-                threshold: "",
-                to: address(0),
-                deadline: uint40(deadline),
-                hasPreTransferInCallback: false,
-                hasPreTransferOutCallback: false,
-                preTransferInHookData: "",
-                postTransferInHookData: "",
-                preTransferOutHookData: "",
-                postTransferOutHookData: "",
-                preTransferInCallbackData: "",
-                preTransferOutCallbackData: "",
-                instructionsArgs: "",
-                signature: ""
-            })
-        );
-    }
-
-    function _sortedTokens(address series) private pure returns (address tokenA, address tokenB) {
-        tokenA = series;
-        tokenB = DEMO_USDC;
-        if (tokenA > tokenB) (tokenA, tokenB) = (tokenB, tokenA);
     }
 }

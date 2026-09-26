@@ -3,8 +3,8 @@
 ## Status
 
 - Version: 0.2
-- State: public market and Aqua position deployed; distinct-trader transaction
-  and final verification pending
+- State: public market, Aqua position, and distinct-trader transaction
+  completed; source verification and final manifest checks pending
 - Updated: 2026-09-26
 - Implementation authorization: Prompt 0010 checkpoint 4 in progress under
   explicit operator authorization; no repository commit or push is delegated

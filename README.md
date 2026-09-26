@@ -18,8 +18,10 @@ preflight tooling, and a pinned full-deployment fork rehearsal are available.
 A partial Base Sepolia deployment now includes the demo asset, seeded Uniswap
 V3 pool, exact-source Aqua, size-safe custom SwapVM router and pricing engine,
 volatility registry, guarded TWAP oracle, immutable option series, and a live
-fully collateralized Aqua strategy. The distinct-trader transaction and browser
-application remain pending. No backend is required for the canonical demo.
+fully collateralized Aqua strategy. A distinct trader has completed the public
+0.01 CALL purchase with reconciled real and virtual balances. Source
+verification, final submission checks, and the browser application remain
+pending. No backend is required for the canonical demo.
 
 ## Intended stack
 

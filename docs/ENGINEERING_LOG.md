@@ -295,3 +295,20 @@ current SwapVM registers; the engine returns updated amount registers and
 cannot settle or custody tokens. This produces a 22,503-byte router and an
 11,201-byte engine. The complete 135-test suite passed before broadcast, and
 onchain reads verified both runtime sizes and the immutable engine binding.
+
+## E-020 — Accept the Base Sepolia distinct-trader settlement
+
+- Date: 2026-09-26
+- State: accepted as public onchain evidence
+
+The disposable trader `0xFC78e45702Ae93C1d062001184672c5679532251`
+bought exactly 0.01 CALL through the deployed modified SwapVM router and exact-
+source Aqua. The taker encoded a 1 avUSD maximum input and paid 0.779818 avUSD.
+The trader's CALL balance increased by 0.01, Aqua virtual CALL decreased from
+0.10 to 0.09, and virtual avUSD increased from 50 to 50.779818. OptionSeries
+retained 0.10 WETH against unchanged 0.10 CALL total supply. The public swap
+transaction is
+`0xb49b7574aa15a92cb96fb6b804279ca321488dcd1b43a8c6bb780a9dd1cf7379`.
+After a fresh public observation, the read-only verifier reported a
+3,842.159899 avUSD/WETH TWAP and a higher next 0.01 CALL ask of 0.815649 avUSD
+without changing the strategy hash.
