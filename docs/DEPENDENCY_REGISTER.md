@@ -7,7 +7,7 @@ still requires version and license review before integration.
 | Component | Intended role | Source | Current state |
 | --- | --- | --- | --- |
 | Aqua contracts | Virtual balance allocation and token settlement | `1inch/aqua@ef24220ed9647555727b06867bf509cd6959d84b` | Imported unchanged as a Git submodule; upstream tests pass |
-| SwapVM contracts | Composable swap program execution and base for the isolated AquaVol router extension | `1inch/swap-vm@feb16411738331f7d05ae71d4a664154068018fc` | Imported unchanged as a Git submodule; Aqua integration tests pass; derivative files will use the SwapVM-1.1 license |
+| SwapVM contracts | Composable swap program execution and base for the isolated AquaVol router extension | `1inch/swap-vm@feb16411738331f7d05ae71d4a664154068018fc` | Imported unchanged as a Git submodule; Aqua integration tests pass; AquaVol derivative files use the SwapVM-1.1 license |
 | Aqua SDK | TypeScript transaction encoding and event parsing | `1inch/sdks@3dbd4fd17fdc9fb814b8d55b3efcf4a39eddb32c` (`typescript/aqua`) | Pinned reference; installation deferred |
 | Foundry 1.5.1-stable (`b0a9dd9`) | Local Solidity build and test toolchain; no vendored runtime code | https://github.com/foundry-rs/foundry | In use for Prompt 0004; MIT OR Apache-2.0 |
 | React | Browser UI | https://github.com/facebook/react | Planned |

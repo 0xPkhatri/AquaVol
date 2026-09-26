@@ -3,7 +3,7 @@
 ## Status
 
 - Version: 0.4
-- State: unmodified local baseline implemented; custom-router foundation approved
+- State: custom-router unit foundation implemented; modified settlement pending
 - Implementation authorized: Prompt 0006 checkpoints only
 
 ## Integration objective

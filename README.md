@@ -10,9 +10,10 @@ and a pinned local Aqua/SwapVM integration harness. The unmodified protocol
 baseline settles a tested CALL/USDC trade and reconciles real token transfers
 with Aqua virtual balances.
 
-The project is entering **custom SwapVM router implementation**. The next phase
-adds an isolated AquaVol opcode layer without modifying the pinned upstream
-submodules. Browser, backend, oracle, public deployment, and production pricing
+The **custom SwapVM router foundation is implemented and unit tested**. It adds
+an isolated deterministic proof opcode without modifying the pinned upstream
+submodules. Settlement through this modified router is the next checkpoint.
+Browser, backend, oracle, public deployment, and production pricing
 implementations do not exist yet.
 
 ## Intended stack

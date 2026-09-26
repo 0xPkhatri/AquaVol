@@ -1,9 +1,26 @@
 # AquaVol contracts
 
-This Foundry project contains the isolated `OptionSeries` lifecycle and pinned,
-unmodified Aqua and SwapVM submodules. Local tests now prove deployment and one
-unmodified CALL/USDC swap. Custom pricing, oracle code, public deployment, and
-production token integration are not yet present.
+This Foundry project contains the isolated `OptionSeries` lifecycle, pinned
+unmodified Aqua and SwapVM submodules, and an AquaVol router extension. Local
+tests prove the unmodified CALL/USDC settlement path and the custom opcode
+dispatch foundation. Custom option pricing, oracle code, public deployment,
+and production token integration are not yet present.
+
+## Custom SwapVM foundation
+
+The AquaVol extension leaves both protocol submodules unchanged and adds:
+
+- a raw two-byte instruction-header builder;
+- canonical opcode allocation in the upstream unallocated bank;
+- a dispatcher that handles `0xd0` and delegates other opcodes upstream;
+- a modified router with the official Aqua settlement interface;
+- a temporary exact-output constant-price instruction for integration testing.
+
+`AQUAVOL_CONSTANT_PRICE` accepts ABI-encoded CALL token, quote token, and
+premium-per-whole-CALL values. It calculates the quote input with maker-favoring
+ceiling rounding, rejects unsupported modes and insufficient output liquidity,
+and never transfers tokens or mutates storage. It is test scaffolding and must
+be removed or disabled before final deployment.
 
 ## Behavior
 
@@ -54,6 +71,12 @@ Run only the AquaVol baseline settlement evidence from `contracts/`:
 
 ```bash
 forge test --offline --match-contract AquaSwapVMBaselineTest -vv
+```
+
+Run only the custom-router unit suite:
+
+```bash
+forge test --offline --match-path test/swapvm/AquaVolSwapVMRouter.t.sol -vv
 ```
 
 The suite includes unit tests, a 512-run fractional exercise fuzz test, and

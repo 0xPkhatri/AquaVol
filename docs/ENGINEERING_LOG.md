@@ -135,3 +135,19 @@ disabled before the final deployment.
 The derivative router boundary follows `LicenseRef-Degensoft-SwapVM-1.1`, with
 marked changes, source availability, reproducible instructions, preserved
 notices, and the required README/UI attribution.
+
+## E-011 — Accept the deterministic custom-router foundation
+
+- Date: 2026-09-26
+- State: accepted with integration pending
+
+The AquaVol router, dispatcher, raw instruction builder, and temporary `0xd0`
+constant-price instruction compile against the pinned protocol revisions. Unit
+tests prove canonical encoding, ceiling rounding, liquidity and mode guards,
+upstream opcode delegation, reserved-value rejection, unchanged token balances,
+and inherited Aqua/WETH bindings.
+
+The instruction supports only exact-output quote-to-CALL calculation and has no
+external calls or persistent storage. Acceptance of this unit layer does not
+claim modified-router settlement; Prompt 0006 Checkpoint 3 must demonstrate
+that separately through Aqua.

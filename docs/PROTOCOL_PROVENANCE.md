@@ -50,9 +50,9 @@ eligible when the shared TypeScript encoding package is authorized.
 ## Modified SwapVM component boundary
 
 Prompt 0006 permits AquaVol to extend the pinned SwapVM execution model without
-editing either Git submodule. The planned derivative boundary is limited to new
-AquaVol router, opcode-dispatch, instruction-encoding, and directly supporting
-test files. Those derivative Solidity components MUST:
+editing either Git submodule. The implemented derivative boundary is limited to
+`contracts/src/swapvm` and its directly supporting tests under
+`contracts/test/swapvm`. Those derivative Solidity components MUST:
 
 - use `SPDX-License-Identifier: LicenseRef-Degensoft-SwapVM-1.1`;
 - identify the pinned SwapVM revision and the modification date;
@@ -96,3 +96,19 @@ addresses for supported production networks, including Base mainnet. It does
 not list Base Sepolia. Prompt 0005 therefore authorizes local deployment only.
 Any Base Sepolia deployment requires a later recorded decision, exact-source
 deployment evidence, and sponsor confirmation if available.
+
+## Custom-router checkpoint verification
+
+Verified on 2026-09-26 after adding the isolated AquaVol extension:
+
+- AquaVol Foundry project: 32 tests passed, 0 failed;
+- custom-router unit suite: 11 tests passed, 0 failed;
+- Python reference: 11 tests passed, 0 failed;
+- pinned Aqua upstream suite: 50 tests passed, 0 failed;
+- pinned SwapVM Aqua suites: 95 tests passed, 0 failed.
+
+Both protocol submodules remained clean at their recorded revisions. This
+checkpoint verifies encoding, dispatch, fixed-price register calculation,
+failure guards, upstream delegation, and router bindings. It does not yet prove
+token settlement through the modified router; that belongs to Prompt 0006
+Checkpoint 3.
