@@ -54,19 +54,19 @@ Full addresses and transaction evidence are in
 
 ## Three-minute demo sequence
 
-1. Explain the covered-call flow and show the architecture diagram.
-2. Show `OptionSeries` holding 0.10 WETH against 0.10 CALL supply.
-3. Show the deployed Aqua strategy and custom `0xd1 → 0xd2` program.
-4. Open the public trade transaction and show 0.779818 avUSD for 0.01 CALL.
-5. Show post-trade Aqua balances: 0.09 CALL and 50.779818 avUSD.
-6. Show the next ask of 0.815649 avUSD and explain inventory repricing.
-7. Show the 135 passing tests and point judges to the integration files.
+1. Show the frontend's live Base Sepolia contract-read strip.
+2. Build a spread or straddle and show the payoff react immediately.
+3. Explain that only the labelled WETH 4,000 CALL is deployed.
+4. Show Uniswap TWAP → pricing → custom SwapVM → Aqua settlement.
+5. Open the public trade proving 0.779818 avUSD for 0.01 CALL.
+6. Show inventory at 0.09 CALL / 50.779818 avUSD and the higher next ask.
+7. End with deployed-contract links and 135 passing Foundry tests.
 
 ## Manual submission checklist
 
 - [ ] Build and deploy the frontend.
 - [ ] Add the live frontend URL to the root README and ETHGlobal submission.
-- [ ] Complete the Uniswap Developer Feedback Form with the public
+- [x] Complete the Uniswap Developer Feedback Form with the public
       `FEEDBACK.md` link.
 - [ ] Record and upload the demo video.
 - [ ] Add the video URL and final submission URL to the README.

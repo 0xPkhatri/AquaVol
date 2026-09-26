@@ -20,8 +20,9 @@ V3 pool, exact-source Aqua, size-safe custom SwapVM router and pricing engine,
 volatility registry, guarded TWAP oracle, immutable option series, and a live
 fully collateralized Aqua strategy. A distinct trader has completed the public
 0.01 CALL purchase with reconciled real and virtual balances. Source
-verification, final submission checks, and the browser application remain
-pending. No backend is required for the canonical demo.
+verification and final submission checks remain pending. The browser strategy
+workspace now includes live Base Sepolia reads, a strike ladder, multi-leg
+payoffs, and public settlement evidence. No backend is required for the demo.
 
 ## Intended stack
 
@@ -98,6 +99,20 @@ OptionSeries retained the full 0.10 WETH collateral throughout settlement.
 See the [complete deployment evidence](docs/BASE_SEPOLIA_DEPLOYMENT.md) for
 constructor settings, transaction sequence, balance reconciliation, strategy
 hash, trust assumptions, and reproducible verification commands.
+
+## Frontend strategy workspace
+
+The [`frontend`](frontend/README.md) application includes editable four-leg
+CALL/PUT strategies, explicit `LIVE` versus `SIM` instruments, an interactive
+payoff diagram, Base Sepolia contract reads, and direct public-evidence links.
+Only the deployed WETH 4,000 CALL expiring 2026-10-04 is labelled live.
+
+```bash
+cd frontend
+npm install
+npm run build
+npm run dev
+```
 
 ## Mathematical reference
 
@@ -187,6 +202,7 @@ Current working documents:
 - [Volatility registry and fair value](specs/09-volatility-and-fair-value.md)
 - [Inventory-aware pricing](specs/10-inventory-aware-pricing.md)
 - [Base Sepolia deployment](specs/11-base-sepolia-deployment.md)
+- [Frontend strategy workspace](specs/12-frontend-strategy-workspace.md)
 - [Engineering log](docs/ENGINEERING_LOG.md)
 - [Dependency register](docs/DEPENDENCY_REGISTER.md)
 - [Protocol provenance](docs/PROTOCOL_PROVENANCE.md)
