@@ -1,11 +1,11 @@
 # AquaVol contracts
 
 This Foundry project contains the isolated `OptionSeries` lifecycle, pinned
-unmodified Aqua and SwapVM submodules, an AquaVol router extension, and a
-guarded Uniswap V3 TWAP adapter. Local tests prove the CALL/USDC settlement
-path, custom opcode dispatch foundation, and oracle validation boundary.
-Custom option pricing, public deployment, and production token integration are
-not yet present.
+unmodified Aqua and SwapVM submodules, an AquaVol router extension, a guarded
+Uniswap V3 TWAP adapter, and a bounded implied-volatility registry. Local tests
+prove the CALL/USDC settlement path, custom opcode dispatch foundation, and
+oracle validation boundaries. Custom option pricing, public deployment, and
+production token integration are not yet present.
 
 ## Custom SwapVM foundation
 
@@ -97,6 +97,15 @@ forge test --match-path test/fork/BaseSepoliaUniswapV3.t.sol -vv
 The fork test resolves the WETH/test-USDC pool through the official V3 factory
 and performs no transaction, deployment, liquidity operation, or swap. Without
 the opt-in flag, it makes no RPC request.
+
+## Volatility trust boundary
+
+`VolatilityRegistry` stores 18-decimal annualized implied volatility keyed by
+the deployed `OptionSeries` address. One immutable updater may write values from
+0.01% through 500%; every update receives the current block timestamp and emits
+its previous and new value. The registry has no ownership transfer, fallback
+value, arbitrary timestamp input, token operation, or external series call.
+Consumers remain responsible for enforcing a strategy-bound freshness limit.
 
 The suite includes unit tests, a 512-run fractional exercise fuzz test, and
 stateful invariants covering lifecycle transitions and collateral solvency.
