@@ -2,10 +2,11 @@
 
 ## Status
 
-- Version: 0.1
-- State: architecture approved
+- Version: 0.2
+- State: implemented and tested, including read-only Base Sepolia evidence
 - Updated: 2026-09-26
-- Implementation authorized: Prompt 0007 checkpoints 2 and 3 only
+- Implementation authorization: Prompt 0007 checkpoints complete; Prompt 0010
+  may deploy the adapter after its preflight and rehearsal gates
 
 ## Objective
 

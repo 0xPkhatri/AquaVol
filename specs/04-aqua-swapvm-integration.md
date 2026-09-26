@@ -2,11 +2,11 @@
 
 ## Status
 
-- Version: 0.6
-- State: custom-router settlement and spot oracle implemented; fair-value
-  architecture specified
-- Implementation authorized: Prompt 0008 checkpoints, subject to its explicit
-  human-review gates; inventory pricing remains unauthorized
+- Version: 0.7
+- State: custom-router settlement, fair value, inventory skew, and dynamic Aqua
+  repricing implemented and tested
+- Implementation authorized: Prompt 0010 may deploy the tested integration
+  through its review-gated checkpoints
 
 ## Integration objective
 

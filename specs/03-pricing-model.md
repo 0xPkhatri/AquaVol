@@ -2,11 +2,11 @@
 
 ## Status
 
-- Version: 0.4
-- State: reference math and Uniswap spot oracle implemented; fair-value
-  architecture specified
-- Implementation authorized: Prompt 0008 checkpoints, subject to its explicit
-  human-review gates
+- Version: 0.5
+- State: reference math, guarded spot, bounded volatility, fair value, inventory
+  adjustment, spread, and bidirectional settlement implemented and tested
+- Implementation authorized: Prompt 0010 may consume the implemented pricing
+  path for review-gated Base Sepolia deployment
 
 ## Scope
 

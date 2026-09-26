@@ -105,7 +105,11 @@ Each oracle read MUST validate:
 - correct quote denomination.
 
 Oracle addresses MUST be bound into the immutable strategy. Administrator
-updates MUST emit events. Demo administration keys MUST hold no collateral.
+updates MUST emit events. Production-oriented deployments SHOULD keep the
+volatility updater separate from collateral and maker liquidity. The Base
+Sepolia hackathon profile MAY consolidate updater, writer, and maker in one
+disclosed testnet-only operator, but MUST keep the trader identity separate and
+MUST NOT weaken collateral, authorization, freshness, or settlement checks.
 
 For a Uniswap V3 TWAP read, validation MUST additionally cover:
 

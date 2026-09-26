@@ -2,10 +2,11 @@
 
 ## Status
 
-- Version: 0.5
+- Version: 0.6
 - State: approved MVP baseline
 - Implementation authorized: reference math, OptionSeries, protocol routing,
-  Prompt 0007 spot-oracle checkpoints, and Prompt 0008 fair-value checkpoints
+  spot oracle, fair value, and inventory-aware pricing; deployment architecture
+  is ready for review under Prompt 0010 checkpoint 1
 - Network target: Base Sepolia
 
 The words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** describe normative
@@ -50,10 +51,14 @@ The trader:
 ### Administrator
 
 For the MVP, an administrator updates only the volatility registry. Spot comes
-from the strategy-bound Uniswap V3 TWAP oracle. This role MUST NOT control
-collateral or trader tokens. The UI and documentation MUST identify volatility
-as a trusted demo input and disclose whether the selected Uniswap pool is a
-project-seeded test market.
+from the strategy-bound Uniswap V3 TWAP oracle. In the local security model,
+this role SHOULD remain separate from the writer and maker. The Base Sepolia
+hackathon deployment MAY consolidate deployer, volatility updater, writer, and
+maker into one disclosed, testnet-only operator wallet. It MUST still use a
+distinct trader wallet and cannot bypass contract collateral rules or control
+trader-held tokens. The UI and documentation MUST identify volatility as a
+trusted demo input, disclose the consolidated role, and identify the selected
+Uniswap pool as a project-seeded test market.
 
 ## Canonical market
 
@@ -188,7 +193,8 @@ The one-writer restriction, canonical parameters, administrator-controlled
 volatility, and buyback support are approved for the MVP. Prompt 0004
 authorized `OptionSeries`; Prompt 0005 authorized the pinned unmodified
 Aqua/SwapVM baseline; Prompt 0006 completed the custom-router foundation;
-Prompt 0007 completed the Uniswap spot-oracle checkpoints. Prompt 0008
-authorizes the bounded volatility registry and unskewed fair-value path through
-separate review gates. Inventory pricing, deployment, and browser
-implementation still require later phase prompts.
+Prompt 0007 completed the Uniswap spot-oracle checkpoints, Prompt 0008 completed
+the bounded volatility and fair-value path, and Prompt 0009 completed
+inventory-aware Aqua repricing. Prompt 0010 defines the review-gated Base
+Sepolia deployment. Deployment tooling, public deployment, and browser
+implementation remain incomplete.

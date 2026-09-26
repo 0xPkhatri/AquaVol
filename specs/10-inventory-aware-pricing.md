@@ -2,11 +2,11 @@
 
 ## Status
 
-- Version: 0.1
-- State: architecture ready for review
+- Version: 0.2
+- State: implemented and tested; temporary constant-price scaffold retired
 - Updated: 2026-09-26
-- Implementation authorization: Prompt 0009 checkpoints 2–5 only after this
-  architecture checkpoint is reviewed and committed by a human
+- Implementation authorization: Prompt 0009 checkpoints complete; Prompt 0010
+  may deploy the inventory-aware strategy after its review gates
 
 ## Objective
 

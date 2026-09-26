@@ -243,3 +243,21 @@ Opcode `0xd0`, its constant-price implementation, and its dedicated settlement
 tests are retired. Historical specifications, evidence, and commits remain
 available to explain the staged integration path, while the active dispatcher
 exposes only `0xd1` and `0xd2` from AquaVol's opcode bank.
+
+## E-017 — Use a disclosed two-wallet Base Sepolia operating model
+
+- Date: 2026-09-26
+- State: accepted for Prompt 0010 architecture review
+
+The public hackathon deployment uses one disposable, testnet-only operator as
+deployer, volatility updater, option writer, and Aqua maker, with a distinct
+browser-connected trader. This consolidation reduces deployment coordination
+while preserving an independent counterparty for visible token-transfer
+evidence. It supersedes the earlier absolute demo-key separation requirement
+only for the Base Sepolia hackathon profile.
+
+The operator's ability to change implied volatility and control maker liquidity
+must be disclosed in the README, UI, and deployment manifest. Contract-enforced
+collateral isolation, oracle freshness, pricing bounds, Aqua accounting, and
+trader-token authorization remain unchanged. Production use would require
+separated roles, stronger key management, governance, and an audit.

@@ -2,10 +2,10 @@
 
 ## Status
 
-- Version: 0.5
+- Version: 0.6
 - State: approved demo baseline
-- Implementation authorized: implemented local foundations, Prompt 0007 spot
-  oracle, and Prompt 0008 fair-value checkpoints only
+- Implementation authorized: implemented local pricing and settlement path;
+  Prompt 0010 deployment architecture only until later checkpoints are reviewed
 
 ## Demo objective
 
@@ -34,7 +34,8 @@ manipulated.
 
 Before presenting, prepare:
 
-- one funded maker test wallet;
+- one funded testnet-only operator wallet acting as deployer, updater, writer,
+  and maker under the disclosed hackathon profile;
 - one funded trader test wallet;
 - one active canonical CALL series;
 - one exercise-ready series or deterministic fork snapshot;

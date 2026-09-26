@@ -2,11 +2,11 @@
 
 ## Status
 
-- Version: 0.1
-- State: architecture ready for review
+- Version: 0.2
+- State: implemented and tested
 - Updated: 2026-09-26
-- Implementation authorization: Prompt 0008 checkpoints 2–4 only after the
-  architecture checkpoint is reviewed and committed by a human
+- Implementation authorization: Prompt 0008 checkpoints complete; Prompt 0010
+  may deploy the registry and fair-value path after its review gates
 
 ## Objective
 
@@ -28,9 +28,12 @@ Spot and volatility have deliberately different trust models:
 - strike and expiry come from the immutable CALL token contract;
 - every accepted quote checks each source independently and fails closed.
 
-The volatility administrator holds no collateral and cannot exercise, redeem,
-ship, dock, or transfer maker inventory. It can still influence trading prices,
-so the UI and demo MUST identify this role.
+By default, the volatility administrator holds no collateral and cannot
+exercise, redeem, ship, dock, or transfer maker inventory. The Base Sepolia
+hackathon profile in `specs/11-base-sepolia-deployment.md` explicitly permits a
+testnet-only operator to combine administrator, writer, and maker roles while
+keeping the trader separate. In either profile, the updater can influence
+trading prices, so the UI and demo MUST identify this role and any consolidation.
 
 ## Volatility registry
 

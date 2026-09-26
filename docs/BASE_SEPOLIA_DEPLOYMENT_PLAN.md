@@ -15,6 +15,15 @@ broadcast transactions.
   factory and seeded near 3,800 DemoUSDC per WETH.
 - Comparison only: existing canonical WETH/Circle test-USDC 0.30% pool.
 
+The official Uniswap V3 Base deployment page was rechecked on 2026-09-26 and
+lists factory `0x4752ba5DBc23f44D87826276BF6Fd6b1C372aD24`, position manager
+`0x27F971cb582BF9E50F397e4d29a5C7A34f11faA2`, SwapRouter02
+`0x94cC0AaC535CCDB3C01d6787D6413C739ae12bc4`, and WETH
+`0x4200000000000000000000000000000000000006` for Base Sepolia. Recheck the
+[official registry](https://developers.uniswap.org/docs/protocols/v3/deployments/v3-base-deployments)
+and deployed code during every preflight rather than treating this record as
+permanent configuration.
+
 Public deployment amounts MAY be smaller than local canonical inventory when
 testnet WETH is scarce, but per-WETH strike, premium, decimals, and accounting
 must remain identical. The final amounts require a reviewed deployment prompt.
@@ -40,8 +49,14 @@ must remain identical. The final amounts require a reviewed deployment prompt.
 
 ## Operational rules
 
-- Use a dedicated unfunded testnet deployer, preferably through an encrypted
-  Foundry keystore; never commit a private key or populated `.env`.
+- Use one dedicated testnet-only operator for deployer, volatility updater,
+  writer, and Aqua maker, plus a distinct browser-connected trader. This is a
+  disclosed hackathon simplification, not a production role model.
+- Prefer an encrypted Foundry keystore for the operator; an ignored local
+  `contracts/.env` is acceptable for the disposable test identity. Never print
+  or commit a private key, mnemonic, populated `.env`, or provider credential.
+- Fund both identities with Base Sepolia ETH for their own transactions. Do not
+  confuse Ethereum Sepolia ETH with Base Sepolia ETH.
 - Broadcast only from a separately reviewed deployment prompt.
 - Store chain ID, source commit, compiler settings, constructor arguments,
   addresses, transactions, and verification status in a versioned manifest.
@@ -49,3 +64,6 @@ must remain identical. The final amounts require a reviewed deployment prompt.
   show the exact values before broadcasting.
 - Keep local-fork demo evidence available if the public RPC, explorer, or pool
   observation history is unavailable during judging.
+- Treat each state-changing stage as separately authorized. Approval to deploy
+  infrastructure does not authorize pool initialization, liquidity provision,
+  strategy shipping, or a trader transaction.

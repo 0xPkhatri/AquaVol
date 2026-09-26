@@ -12,9 +12,11 @@ with Aqua virtual balances.
 
 The **custom SwapVM router, local Aqua settlement path, guarded Uniswap V3 TWAP
 spot oracle, bounded volatility registry, fixed-point Black-Scholes libraries,
-and fair-value opcode are implemented and tested**. Base Sepolia canonical-pool
-verification is available as an explicit read-only fork check. The inventory
-skew opcode, browser, backend, and public deployment do not exist yet.
+fair-value opcode, inventory-skew opcode, and dynamic Aqua repricing are
+implemented and tested**. Base Sepolia canonical-pool verification is available
+as an explicit read-only fork check. Deployment architecture is specified, but
+deployment tooling, the browser application, and the public deployment do not
+exist yet. No backend is required for the canonical demo.
 
 ## Intended stack
 
@@ -129,6 +131,7 @@ Current working documents:
 - [Uniswap V3 TWAP oracle](specs/08-uniswap-v3-twap-oracle.md)
 - [Volatility registry and fair value](specs/09-volatility-and-fair-value.md)
 - [Inventory-aware pricing](specs/10-inventory-aware-pricing.md)
+- [Base Sepolia deployment](specs/11-base-sepolia-deployment.md)
 - [Engineering log](docs/ENGINEERING_LOG.md)
 - [Dependency register](docs/DEPENDENCY_REGISTER.md)
 - [Protocol provenance](docs/PROTOCOL_PROVENANCE.md)
@@ -156,3 +159,12 @@ The pinned Aqua and SwapVM sources retain their upstream licenses and notices.
 Any AquaVol component that modifies or extends SwapVM is published under
 `LicenseRef-Degensoft-SwapVM-1.1`; independent AquaVol components keep their
 own stated licenses. See [protocol provenance](docs/PROTOCOL_PROVENANCE.md).
+
+## Testnet trust model
+
+The planned Base Sepolia demo uses one dedicated, testnet-only operator wallet
+as deployer, volatility updater, option writer, and Aqua maker. This consolidated
+role can influence quotes and is a disclosed hackathon simplification, not a
+production security model. A distinct browser-connected trader wallet provides
+the independent counterparty for public transfer evidence. Neither identity
+should hold mainnet assets, and no private key belongs in this repository.
