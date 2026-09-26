@@ -4,14 +4,16 @@ AquaVol is a spec-driven project being developed during ETHGlobal Tokyo 2026.
 
 ## Status
 
-This repository contains the project baseline, prompt record, product
-specifications, an independent Python mathematical reference, and the first
-isolated Solidity implementation of the collateralized option lifecycle. No
-browser, backend, Aqua, SwapVM, oracle, or deployment implementation exists yet.
+This repository contains the project specifications and prompt record, an
+independent Python mathematical reference, the collateralized option lifecycle,
+and a pinned local Aqua/SwapVM integration harness. The unmodified protocol
+baseline settles a tested CALL/USDC trade and reconciles real token transfers
+with Aqua virtual balances.
 
-The project is in **OptionSeries implementation**. The contract phase is kept
-separate from pricing and trading integration so its collateral and settlement
-invariants can be tested independently.
+The project is entering **custom SwapVM router implementation**. The next phase
+adds an isolated AquaVol opcode layer without modifying the pinned upstream
+submodules. Browser, backend, oracle, public deployment, and production pricing
+implementations do not exist yet.
 
 ## Intended stack
 
@@ -118,6 +120,7 @@ Current working documents:
 - [Aqua and SwapVM integration](specs/04-aqua-swapvm-integration.md)
 - [Security invariants](specs/05-security-invariants.md)
 - [Demo acceptance](specs/06-demo-acceptance.md)
+- [Custom SwapVM router](specs/07-custom-swapvm-router.md)
 - [Engineering log](docs/ENGINEERING_LOG.md)
 - [Dependency register](docs/DEPENDENCY_REGISTER.md)
 - [Protocol provenance](docs/PROTOCOL_PROVENANCE.md)
@@ -131,3 +134,14 @@ Current working documents:
 - [Aqua contracts](https://github.com/1inch/aqua)
 - [SwapVM contracts](https://github.com/1inch/swap-vm)
 - [Aqua TypeScript SDK](https://github.com/1inch/sdks/tree/master/typescript/aqua)
+
+## Protocol attribution
+
+Powered by Aqua — © Degensoft Ltd 2025.
+
+Powered by SwapVM — © Degensoft Ltd 2025.
+
+The pinned Aqua and SwapVM sources retain their upstream licenses and notices.
+Any AquaVol component that modifies or extends SwapVM is published under
+`LicenseRef-Degensoft-SwapVM-1.1`; independent AquaVol components keep their
+own stated licenses. See [protocol provenance](docs/PROTOCOL_PROVENANCE.md).

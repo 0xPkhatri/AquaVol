@@ -2,9 +2,9 @@
 
 ## Status
 
-- Version: 0.3
-- State: unmodified local baseline implemented
-- Implementation authorized: dependency pinning and unmodified local baseline only
+- Version: 0.4
+- State: unmodified local baseline implemented; custom-router foundation approved
+- Implementation authorized: Prompt 0006 checkpoints only
 
 ## Integration objective
 
@@ -81,14 +81,18 @@ separately disclosed trust model.
 
 ## Custom instruction set
 
-The modified router MUST define explicit custom opcode identifiers for:
+The canonical AquaVol opcode mapping is:
 
-1. `OPTION_FAIR_VALUE`
-2. `OPTION_INVENTORY_SKEW`
+| Opcode | Name | Phase |
+| --- | --- | --- |
+| `0xd0` | `AQUAVOL_CONSTANT_PRICE` | Temporary deterministic integration proof |
+| `0xd1` | `OPTION_FAIR_VALUE` | Reserved for later pricing implementation |
+| `0xd2` | `OPTION_INVENTORY_SKEW` | Reserved for later inventory implementation |
 
-Opcode identifiers MUST use unoccupied values in the pinned upstream version.
-Solidity and TypeScript opcode tables MUST be generated from or tested against
-one canonical mapping.
+The pinned upstream version declares `0xd0–0xef` unallocated and `0xf0–0xff`
+reserved. AquaVol MUST NOT allocate any value in the reserved bank. Solidity
+and TypeScript opcode tables MUST be generated from or tested against one
+canonical mapping.
 
 The router MUST delegate all unaffected behavior to the pinned official
 implementation. Custom instructions MUST calculate register values only and
@@ -220,8 +224,10 @@ Tests or scripts MUST demonstrate in dependency order:
 - SwapVM: `feb16411738331f7d05ae71d4a664154068018fc`
 - Aqua SDK reference: `3dbd4fd17fdc9fb814b8d55b3efcf4a39eddb32c`
 
-Prompt 0005 authorizes an unmodified local Aqua/SwapVM swap in three reviewed
-checkpoints. Custom instructions, pricing code, and public deployment remain
+Prompt 0005 authorized an unmodified local Aqua/SwapVM swap in three reviewed
+checkpoints. Prompt 0006 authorizes an isolated modified router, the temporary
+`AQUAVOL_CONSTANT_PRICE` opcode, and compatibility tests. Fair-value,
+inventory-skew, oracle, TypeScript, and public deployment code remain
 unauthorized.
 
 The Checkpoint 3 local test demonstrates a CALL/USDC exact-output swap,
@@ -233,6 +239,5 @@ liquidity rejection using the pinned unmodified contracts.
 
 - Exact Base Sepolia Aqua deployment approach.
 - Test-token addresses and acquisition method.
-- Concrete opcode numbers after upstream inspection.
 - Whether the modified router needs any custom storage beyond inherited state;
   the preferred answer is no.

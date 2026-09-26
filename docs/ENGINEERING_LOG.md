@@ -113,3 +113,25 @@ CALL liquidity revert without partial settlement.
 This accepts protocol wiring only. The upstream constant-product instruction
 is not the AquaVol option-pricing model and must be replaced by separately
 authorized custom pricing instructions.
+
+## E-010 — Isolate custom opcodes from the pinned submodules
+
+- Date: 2026-09-26
+- State: accepted
+
+AquaVol will leave both upstream Git submodules unchanged. A new derivative
+router and opcode dispatcher will intercept AquaVol instructions and delegate
+all other instructions to the pinned official implementation. The extension
+will add no custom storage and custom opcodes will only calculate swap-register
+values; Aqua remains responsible for token settlement.
+
+At pinned SwapVM revision `feb16411738331f7d05ae71d4a664154068018fc`, the
+`0xd0–0xef` bank is unallocated and `0xf0–0xff` is permanently reserved.
+AquaVol allocates `0xd0` to a temporary deterministic constant-price proof and
+reserves `0xd1` and `0xd2` for fair value and inventory skew. The temporary
+opcode must not be presented as production pricing and must be removed or
+disabled before the final deployment.
+
+The derivative router boundary follows `LicenseRef-Degensoft-SwapVM-1.1`, with
+marked changes, source availability, reproducible instructions, preserved
+notices, and the required README/UI attribution.

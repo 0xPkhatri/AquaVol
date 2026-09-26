@@ -2,14 +2,15 @@
 
 ## Document status
 
-- Stage: discovery
-- Version: 0.1
+- Stage: phased implementation
+- Version: 0.2
 - Updated: 2026-09-26
-- Implementation authorized: no
+- Implementation authorized: only through reviewed phase prompts
 
-This document records what is known before product behavior is frozen. It is
-not a product specification and must not be treated as approval to invent
-missing economic behavior.
+This document records the project-wide foundation. Detailed implementation
+authority comes only from the latest reviewed product specifications and phase
+prompts; this document must not be treated as approval to invent missing
+economic behavior.
 
 ## Project intent
 
@@ -63,7 +64,7 @@ deterministic test-vector generation. It will not be a trusted component in a
 live transaction. Any equivalent TypeScript or Solidity calculation must be
 tested against the same vectors with declared error and rounding limits.
 
-## Decisions required before implementation
+## Decisions tracked during implementation
 
 1. What assets does a maker allocate, and what exposure do they receive?
 2. Who takes the other side of the position and why would they participate?
@@ -115,4 +116,3 @@ The eventual canonical demo should show:
 - Leverage and liquidation systems.
 - A general-purpose derivatives protocol.
 - UI polish before the end-to-end settlement path works.
-

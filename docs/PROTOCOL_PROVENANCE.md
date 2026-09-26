@@ -22,8 +22,8 @@ advancing a branch reference.
 
 - preserve upstream SPDX identifiers, copyright notices, license files, and
   third-party notices;
-- identify the source as Aqua and retain the upstream attribution required by
-  the Aqua license;
+- retain the exact README and applicable UI attribution required by the Aqua
+  and SwapVM licenses;
 - clearly mark and date any later modifications;
 - keep modified or derivative components under the applicable upstream source
   license when its terms require that treatment;
@@ -46,6 +46,23 @@ lockfiles and are not repository content.
 
 The Aqua SDK must not be installed merely for the Solidity baseline. It becomes
 eligible when the shared TypeScript encoding package is authorized.
+
+## Modified SwapVM component boundary
+
+Prompt 0006 permits AquaVol to extend the pinned SwapVM execution model without
+editing either Git submodule. The planned derivative boundary is limited to new
+AquaVol router, opcode-dispatch, instruction-encoding, and directly supporting
+test files. Those derivative Solidity components MUST:
+
+- use `SPDX-License-Identifier: LicenseRef-Degensoft-SwapVM-1.1`;
+- identify the pinned SwapVM revision and the modification date;
+- preserve applicable notices and include the required repository attribution;
+- keep complete source, tests, and reproducible build instructions public;
+- clearly distinguish AquaVol changes from unchanged upstream sources.
+
+Independent contracts such as `OptionSeries`, which neither incorporate nor
+extend SwapVM, remain outside this derivative boundary. This classification is
+an engineering record and not legal advice.
 
 ## Verification record
 

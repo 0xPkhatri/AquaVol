@@ -2,9 +2,10 @@
 
 ## Status
 
-- Version: 0.2
+- Version: 0.3
 - State: approved demo baseline
-- Implementation authorized: mathematical reference and isolated OptionSeries
+- Implementation authorized: implemented local foundations and Prompt 0006
+  custom-router checkpoints only
 
 ## Demo objective
 

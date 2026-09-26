@@ -2,9 +2,10 @@
 
 ## Status
 
-- Version: 0.2
+- Version: 0.3
 - State: approved MVP baseline
-- Implementation authorized: mathematical reference and isolated OptionSeries
+- Implementation authorized: reference math, OptionSeries, unmodified protocol
+  baseline, and Prompt 0006 custom-router foundation
 - Network target: Base Sepolia
 
 The words **MUST**, **MUST NOT**, **SHOULD**, and **MAY** describe normative
@@ -182,6 +183,8 @@ After the canonical path is complete, the project MAY add:
 ## Product acceptance
 
 The one-writer restriction, canonical parameters, administrator-controlled demo
-inputs, and buyback support are approved for the MVP. Prompt 0004 authorizes
-the isolated `OptionSeries` implementation. Aqua, SwapVM, oracle, deployment,
-and browser implementation still require later phase prompts.
+inputs, and buyback support are approved for the MVP. Prompt 0004 authorized
+the isolated `OptionSeries`; Prompt 0005 authorized the pinned unmodified
+Aqua/SwapVM baseline; Prompt 0006 authorizes only the custom-router foundation
+described in its checkpoints. Oracle, production pricing, deployment, and
+browser implementation still require later phase prompts.
