@@ -23,6 +23,7 @@ export const deployment = {
     optionSeries: "0x7F3c414aEf81CAf377fF34A419EC388105fBA117",
     volatilityRegistry: "0xF2537463ddeA54EEa205bD183a9e303bDe02C37e",
     pool: "0x0d9516aA182Aa72284802372afaa943E9E77A6D0",
+    uniswapRouter: "0x94cC0AaC535CCDB3C01d6787D6413C739ae12bc4",
   },
   tradeTx: "0xb49b7574aa15a92cb96fb6b804279ca321488dcd1b43a8c6bb780a9dd1cf7379",
   strategyHash: "0x1a38d471dce4c9cc7a425010f584dd7ebaf5e0bbcdb42a67506dac1d91e465f5",
