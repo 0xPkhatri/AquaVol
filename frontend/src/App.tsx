@@ -1,28 +1,27 @@
+import { StrategyBuilder } from "./components/StrategyBuilder";
 import { deployment } from "./data/deployment";
 
 function App() {
   return (
-    <main className="foundation-shell">
-      <header>
+    <div className="app-shell">
+      <header className="topbar">
         <a className="brand" href="/" aria-label="AquaVol home">
           <span className="brand-mark">A</span>
           <span>
             Aqua<strong>Vol</strong>
           </span>
         </a>
-        <span className="network">
-          <i />
-          {deployment.network}
-        </span>
+        <nav><a href="#strategy">Strategy builder</a><span className="network"><i />{deployment.network}</span></nav>
       </header>
-      <section>
-        <p>PROGRAMMABLE ONCHAIN OPTIONS</p>
+      <section className="hero">
+        <p className="eyebrow">PROGRAMMABLE ONCHAIN OPTIONS</p>
         <h1>
-          Strategy workspace
+          Options liquidity,
           <br />
-          <em>coming into focus.</em>
+          <em>made programmable.</em>
         </h1>
-        <div className="foundation-grid">
+        <p className="hero-copy">Explore multi-leg WETH strategies while keeping the deployed Aqua position visibly separate from local simulations.</p>
+        <div className="foundation-grid market-grid">
           <article>
             <span>WETH TWAP</span>
             <strong>
@@ -39,12 +38,12 @@ function App() {
             <span>IMPLIED VOL</span>
             <strong>{deployment.volatility * 100}%</strong>
           </article>
+          <article><span>NEXT ASK / 0.01</span><strong>{deployment.lastAsk} avUSD</strong></article>
         </div>
-        <small>
-          Frontend foundation · strategy builder follows in the next checkpoint
-        </small>
       </section>
-    </main>
+      <StrategyBuilder />
+      <footer><span>AquaVol · Base Sepolia experimental software</span><span>Live series and simulations are explicitly labelled</span></footer>
+    </div>
   );
 }
 
