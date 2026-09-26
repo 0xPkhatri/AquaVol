@@ -2,8 +2,8 @@
 
 ## Status
 
-- Version: 0.2
-- State: approved unmodified baseline
+- Version: 0.3
+- State: unmodified local baseline implemented
 - Implementation authorized: dependency pinning and unmodified local baseline only
 
 ## Integration objective
@@ -223,6 +223,11 @@ Tests or scripts MUST demonstrate in dependency order:
 Prompt 0005 authorizes an unmodified local Aqua/SwapVM swap in three reviewed
 checkpoints. Custom instructions, pricing code, and public deployment remain
 unauthorized.
+
+The Checkpoint 3 local test demonstrates a CALL/USDC exact-output swap,
+quote/execution consistency, real and virtual balance reconciliation,
+unchanged OptionSeries collateral, altered-strategy rejection, and insufficient
+liquidity rejection using the pinned unmodified contracts.
 
 ## Unresolved after baseline approval
 

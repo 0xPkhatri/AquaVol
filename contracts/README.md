@@ -1,9 +1,9 @@
 # AquaVol contracts
 
 This Foundry project contains the isolated `OptionSeries` lifecycle and pinned,
-unmodified Aqua and SwapVM submodules. The protocol deployment smoke test is
-present, but AquaVol swap integration, pricing-oracle code, public deployment,
-and production token integration are not.
+unmodified Aqua and SwapVM submodules. Local tests now prove deployment and one
+unmodified CALL/USDC swap. Custom pricing, oracle code, public deployment, and
+production token integration are not yet present.
 
 ## Behavior
 
@@ -48,6 +48,12 @@ forge test --offline
 
 cd ../swap-vm
 forge test --offline --match-path 'test/solidity/*Aqua*.t.sol'
+```
+
+Run only the AquaVol baseline settlement evidence from `contracts/`:
+
+```bash
+forge test --offline --match-contract AquaSwapVMBaselineTest -vv
 ```
 
 The suite includes unit tests, a 512-run fractional exercise fuzz test, and

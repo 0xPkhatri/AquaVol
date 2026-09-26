@@ -98,3 +98,18 @@ reconciles maker, trader, and Aqua virtual balances.
 Reason: this separates upstream integration failures from errors introduced by
 AquaVol's later mathematical instructions and produces meaningful Git history
 without fragmenting the work into cosmetic commits.
+
+## E-009 — Accept the unmodified local settlement baseline
+
+- Date: 2026-09-26
+- State: accepted
+
+The pinned official Aqua and SwapVM contracts settle an exact-output CALL buy
+against 10 CALL and 5,000 USDC of virtual liquidity. The authoritative quote,
+real maker/trader transfers, and Aqua virtual-balance changes reconcile while
+OptionSeries retains all WETH collateral. Altered order bytes and insufficient
+CALL liquidity revert without partial settlement.
+
+This accepts protocol wiring only. The upstream constant-product instruction
+is not the AquaVol option-pricing model and must be replaced by separately
+authorized custom pricing instructions.

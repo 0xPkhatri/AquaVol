@@ -100,6 +100,8 @@ forge test
 
 These contracts are hackathon software and have not been audited. See the
 [contract notes](contracts/README.md) for the current scope and boundaries.
+The [baseline swap evidence](docs/BASELINE_SWAP_EVIDENCE.md) records the local
+unmodified Aqua/SwapVM settlement proof.
 
 ## Development approach
 
