@@ -13,11 +13,13 @@ remappings = [
     "@1inch/swap-vm/=lib/swap-vm/",
     "@1inch/solidity-utils/=lib/swap-vm/node_modules/@1inch/solidity-utils/",
     "@openzeppelin/contracts/=lib/swap-vm/node_modules/@openzeppelin/contracts/",
+    "@prb/math/=lib/prb-math/",
 ]
 fuzz.runs = 512
 invariant.runs = 128
 invariant.depth = 64
 invariant.fail_on_revert = false
+fs_permissions = [{ access = "read", path = "../test/vectors" }]
 
 [fmt]
 line_length = 100

@@ -141,9 +141,18 @@ The result MUST satisfy:
 max(S - K, 0) <= C <= S
 ```
 
-Any invalid signed conversion, unsupported PRBMath domain, arithmetic failure,
-or result outside that bound MUST revert. Runtime trading also rejects a zero
-premium because it cannot produce a safe executable token amount.
+The measured CDF error gives a conservative call-value error budget of:
+
+```text
+(S + K) * 2e-6 + fixed-point rounding allowance
+```
+
+If the raw approximation misses the intrinsic or spot bound by no more than
+that budget, the library MUST clamp to the corresponding analytical bound. The
+specific clamp paths MUST be tested. Any larger deviation, invalid signed
+conversion, unsupported PRBMath domain, or arithmetic failure MUST revert.
+Runtime trading also rejects a zero premium because it cannot produce a safe
+executable token amount.
 
 ## Fair-value instruction
 

@@ -11,10 +11,11 @@ baseline settles a tested CALL/USDC trade and reconciles real token transfers
 with Aqua virtual balances.
 
 The **custom SwapVM router foundation, local Aqua settlement path, guarded
-Uniswap V3 TWAP spot oracle, and bounded volatility registry are implemented
-and tested**. Base Sepolia canonical-pool verification is available as an
-explicit read-only fork check. Browser, backend, public deployment, and
-production option-pricing implementations do not exist yet.
+Uniswap V3 TWAP spot oracle, bounded volatility registry, and fixed-point
+Black-Scholes libraries are implemented and tested**. Base Sepolia
+canonical-pool verification is available as an explicit read-only fork check.
+The fair-value SwapVM opcode, browser, backend, and public deployment do not
+exist yet.
 
 ## Intended stack
 
@@ -132,6 +133,7 @@ Current working documents:
 - [Dependency register](docs/DEPENDENCY_REGISTER.md)
 - [Protocol provenance](docs/PROTOCOL_PROVENANCE.md)
 - [Uniswap provenance](docs/UNISWAP_PROVENANCE.md)
+- [PRBMath provenance](docs/PRB_MATH_PROVENANCE.md)
 - [Base Sepolia deployment plan](docs/BASE_SEPOLIA_DEPLOYMENT_PLAN.md)
 - [Repository policy](docs/REPOSITORY_POLICY.md)
 

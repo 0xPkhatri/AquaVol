@@ -21,3 +21,7 @@ The generator prints JSON to standard output. Compare it with
 without reviewing the numerical change and updating its schema or model
 version when appropriate.
 
+The Solidity pricing tests read this committed JSON file directly rather than
+maintaining a separate set of expected call values. The Python suite also
+measures the selected bounded CDF approximation against `math.erf` over 1,601
+points from `-8` through `8`.

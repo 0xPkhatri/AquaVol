@@ -27,6 +27,32 @@ class NormalCDFTests(unittest.TestCase):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 normal_cdf(value)
 
+    def test_solidity_approximation_error_budget(self) -> None:
+        def approximation(x: float) -> float:
+            if x <= -8.0:
+                return 0.0
+            if x >= 8.0:
+                return 1.0
+            if x == 0.0:
+                return 0.5
+
+            absolute = abs(x)
+            t = 1.0 / (1.0 + 0.2316419 * absolute)
+            polynomial = (
+                0.319381530 * t
+                - 0.356563782 * t**2
+                + 1.781477937 * t**3
+                - 1.821255978 * t**4
+                + 1.330274429 * t**5
+            )
+            density = math.exp(-(absolute**2) / 2.0) / math.sqrt(2.0 * math.pi)
+            positive = 1.0 - density * polynomial
+            return 1.0 - positive if x < 0.0 else positive
+
+        points = [index / 100 for index in range(-800, 801)]
+        errors = [abs(approximation(point) - normal_cdf(point)) for point in points]
+        self.assertLessEqual(max(errors), 0.000002)
+
 
 class BlackScholesTests(unittest.TestCase):
     def test_canonical_call_value(self) -> None:

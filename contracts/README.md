@@ -3,9 +3,10 @@
 This Foundry project contains the isolated `OptionSeries` lifecycle, pinned
 unmodified Aqua and SwapVM submodules, an AquaVol router extension, a guarded
 Uniswap V3 TWAP adapter, and a bounded implied-volatility registry. Local tests
-prove the CALL/USDC settlement path, custom opcode dispatch foundation, and
-oracle validation boundaries. Custom option pricing, public deployment, and
-production token integration are not yet present.
+prove the CALL/USDC settlement path, custom opcode dispatch foundation, oracle
+validation boundaries, and fixed-point European-call reference pricing. The
+fair-value opcode, public deployment, and production token integration are not
+yet present.
 
 ## Custom SwapVM foundation
 
@@ -106,6 +107,19 @@ the deployed `OptionSeries` address. One immutable updater may write values from
 its previous and new value. The registry has no ownership transfer, fallback
 value, arbitrary timestamp input, token operation, or external series call.
 Consumers remain responsible for enforcing a strategy-bound freshness limit.
+
+## Fixed-point fair value
+
+`NormalCDF` implements the bounded Abramowitz and Stegun 26.2.17 approximation,
+including exact tail saturation and symmetry. `BlackScholes` implements only
+the zero-rate, zero-dividend European-call model over the documented spot,
+strike, time, and volatility domains. It uses the pinned, unmodified PRBMath
+`v4.2.0` submodule for signed fixed-point transcendental operations.
+
+Solidity tests read the committed Python JSON vectors directly. They cover CDF
+accuracy and monotonicity, canonical call values, analytical bounds, domain
+edges, intrinsic-value behavior, and a measured approximation clamp. This math
+is not yet wired into SwapVM opcode `0xd1`.
 
 The suite includes unit tests, a 512-run fractional exercise fuzz test, and
 stateful invariants covering lifecycle transitions and collateral solvency.
